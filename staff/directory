@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Directory</title>
+    <style>
+        .staff-directory {
+            display: grid;
+            gap: 2px; /* Adjust spacing between cards */
+            padding: 2px;
+            background-color: #f9f9f9;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Responsive columns */
+            max-width: 100%; /* Ensures it doesn't exceed parent container */
+            width: 100%; /* Allows it to shrink if needed */
+            box-sizing: border-box; /* Prevents padding from increasing width */
+            overflow: hidden; /* Prevents content from overflowing */
+        }
+        .staff-card {
+            perspective: 1000px;
+            width: 100%; /* Allows the cards to scale */
+            max-width: 200px; /* Prevents them from getting too big */
+        }
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            position: relative;
+        }
+        .staff-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: flex-start; /* Align items to the start */
+            justify-content: flex-start; /* Justify content to the start */
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1px; /* Reduced padding */
+            background-color: #fff;
+            text-align: left; /* Left-align text */
+        }
+        .card-front img {
+            align-self: flex-start; /* Ensure image is left-aligned */
+            width: 100%; /* Adjusted image size */
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1px; /* Added margin below the image */
+        }
+        .card-back {
+            transform: rotateY(180deg);
+            padding: 1px; /* Reduced padding */
+        }
+        .card-back h3, .card-back p {
+            margin: 2px 0;
+            font-size: 0.8em;
+            width: 100%; /* Ensure text elements take full width */
+            text-align: left; /* Reinforce left alignment */
+        }
+@media (min-width: 1024px) {
+    .staff-directory {
+        grid-template-columns: repeat(4, 1fr); /* 4 cards per row on large screens */
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .staff-directory {
+        grid-template-columns: repeat(3, 1fr); /* 3 cards per row on tablets */
+    }
+}
+
+@media (max-width: 767px) {
+    .staff-directory {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on mobile */
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="staff-directory">
+        <!-- Staff Cards Start -->
+        <script>
+
+const staff = [
+    {name: "Anastasi, Kathryn (Katy)", pronouns: "She/her", title: "Reference & Instruction Librarian", email: "kanastasi@clark.edu", phone: "(360) 992-2558", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-04/Katy%20Anastasi.jpg"},
+    {name: "Austad, Julie", pronouns: "She/her", title: "Dean of Clark Libraries & Academic Success Services", email: "jaustad@clark.edu", phone: "(360) 992-2472", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-04/Julie%20Austad.jpg"},
+    {name: "Berg, Andrea", pronouns: "She/her", title: "Reference & Instruction Librarian", email: "aberg@clark.edu", phone: "(360) 992-2426", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2024-09/Andrea%20Quilt%20Pic.jpg"},
+    {name: "Brown, Amanda", pronouns: "She/her", title: "Access Services Manager", email: "abrown@clark.edu", phone: "(360) 992-2299", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2020-01/ab%20staff.JPG"},
+    {name: "Davenport, Cheryl", pronouns: "She/her", title: "Cataloging Specialist", email: "cdavenport@clark.edu", phone: "(360) 992-2559", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2016-08/Cheryl-90p.jpg"},
+    {name: "Dean, Jennifer", pronouns: "She/her", title: "Administrative Assistant", email: "jdean@clark.edu", phone: "(360) 992-2329", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2016-08/JenniferD-Pineapple-90.jpg"},
+    {name: "Demos, Sally", pronouns: "She/her", title: "Fiscal Specialist", email: "sdemos@clark.edu", phone: "(360) 992-2257", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2016-08/Sally%20-%20Small.jpg"},
+    {name: "Donehey, Jessie", pronouns: "She/her", title: "Access Services Assistant", email: "jdonehey@clark.edu", phone: "(360) 992-2151", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-10/Jessie_directory_photo.jpg"},
+    {name: "Edwards, Kevin", pronouns: "He/him", title: "Technical Services & Systems Librarian", email: "kwedwards@clark.edu", phone: "(360) 992-2443", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-02/KevinEdwards.jpg"},
+    {name: "Geddings, Paden", pronouns: "He/him", title: "Access Services Assistant", email: "pgeddings@clark.edu", phone: "(360) 992-2151", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-10/Paden_Geddings_directory_photo.png"},
+    {name: "Grant, Zachary", pronouns: "He/him", title: "Reference & Instruction Librarian", email: "zgrant@clark.edu", phone: "(360) 992-2971", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2016-08/Zachary-90p.jpg"},
+    {name: "Gubala, Lucas", pronouns: "He/him", title: "IT and Serials Technician", email: "lgubala@clark.edu", phone: "(360) 992-2638", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2024-03/BrightFuture-twocolor-Libraries_1.png"},
+    {name: "Kachenkov, Sergey", pronouns: "He/him", title: "IT/Systems Specialist", email: "skachenkov@clark.edu", phone: "(360) 992-2255", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2016-08/Sergey-90px.jpg"},
+    {name: "Mackintosh, Lucy", pronouns: "She/her", title: "Access Services Technician", email: "lmackintosh@clark.edu", phone: "(360) 992-2784", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-10/Lucy_directory_image.jpg"},
+    {name: "Moreno Ortiz, Marisol", pronouns: "She/her", title: "Reference & Instruction Librarian", email: "mmorenoortiz@clark.edu", phone: "(360) 992-2427", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2022-04/m_photo.JPG"},
+    {name: "Nagel, Laura", pronouns: "She/her", title: "Reference & Instruction Librarian", email: "lnagel@clark.edu", phone: "(360) 992-2826", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2016-08/laura.jpg"},
+    {name: "Robert, Madeline", pronouns: "She/her", title: "Reference & Instruction Librarian", email: "mrobert@clark.edu", phone: "(360) 992-2375", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-04/Madeline%20Robert.jpg"},
+    {name: "Shaman, Andrew", pronouns: "He/him", title: "Reference & Instruction Librarian", email: "ashaman@clark.edu", phone: "(360) 992-2375", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2023-12/Andrew_with_long_hair_and_tie.png"},
+    {name: "Walter, Shay", pronouns: "She/her", title: "Access Services Technician", email: "siwalter@clark.edu", phone: "(360) 992-2152", campus: "Main campus", img: "https://library.clark.edu/sites/default/files/2024-05/SIWalter.jpg"}
+];
+
+        document.querySelector('.staff-directory').innerHTML = staff.map(member => `
+            <div class="staff-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="${member.img}" alt="${member.name}">
+                    </div>
+                    <div class="card-back">
+                        <h3>${member.name}</h3>
+                        <p>${member.pronouns}</p>
+                        <p>${member.title}</p>
+                        <p>${member.email}</p>
+                        <p>${member.phone}</p>
+                        <p>${member.campus}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>
