@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Liaison Search</title>
+  <style>
+    #liaison-search-widget {
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      font-family: sans-serif;
+    }
+
+    #liaison-search-widget label,
+    #liaison-search-widget input,
+    #liaison-search-widget button {
+      display: block;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    #liaison-search-widget button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    #liaison-search-widget .results-container {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+
+    #liaison-search-widget .results-container p {
+      margin: 5px 0;
+    }
+
+    #liaison-search-widget hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 10px 0;
+    }
+
+    #liaison-search-widget fieldset {
+      border: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+
+    #liaison-search-widget fieldset label,
+    #liaison-search-widget fieldset input {
+      display: inline-block; /* Inline display for radio buttons and labels */
+      width: auto; /* Auto width to fit content */
+      margin-right: 10px; /* Add spacing between elements */
+    }
+  </style>
+</head>
+<body>
+  <div id="liaison-search-widget">
+    <label for="searchTerm">Search Term:</label>
+    <input type="text" id="searchTerm" name="searchTerm">
+
+    <fieldset>
+      <legend>Search By:</legend>
+      <input type="radio" id="searchLCC" name="searchType" value="lcc" checked>
+      <label for="searchLCC">LCC</label>
+      <input type="radio" id="searchUnit" name="searchType" value="unit">
+      <label for="searchUnit">Instructional Unit</label>
+      <input type="radio" id="searchDepartment" name="searchType" value="department">
+      <label for="searchDepartment">Department</label>
+      <input type="radio" id="searchLiaison" name="searchType" value="liaison">
+      <label for="searchLiaison">Subject Liaison</label>
+    </fieldset>
+
+    <button id="searchButton">Search</button>
+
+    <div id="results" class="results-container" aria-live="polite"></div>
+  </div>
+
+  <script>
+(function() {
+  const data = [
+{
+    "ranges": ["HF5601-5689", "HG1-HG9999", "KF6200-6800"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Accounting"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["HV5001-5840", "RC563-RC568"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Addiction"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["GV201-1198.995", "R855-920", "RC71-78.7", "RC620-627", "RC1200-1245", "RD792-811", "RJ206-235", "RM182-259", "RM695-950"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Allied Health"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["HV1551-3024"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["American Sign Language"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["CC1-CC960", "E51-E74", "E75-E100", "GN1-GN950", "GR1-GR950", "GT1-GT9999", "HT1501-HT1595"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Anthropology"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["N-NX"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Art"],
+    "subjectLiaisons": ["Kevin"]
+},
+{
+    "ranges": ["QB"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Astronomy"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["TL"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Automotive Technology"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["HD-HF"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["BAS Applied Management - BASAM"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["Q300-Q390", "QA71-QA76.95", "QA76.75-QA76.765", "T58.5-T58.64"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["BAS Cybersecurity"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["HM811-1281", "HQ1-2030", "HV1-9960"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["BAS Human Services - BASHS"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["L-L9999", "LA1-9999", "LB5-3095", "LC"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["BAS Teacher Education - BASTE"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["QH1-671", "QK1-989", "QL1-991", "QM1-695", "QP1-695", "QR1-502"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Biology"],
+    "subjectLiaisons": ["Zachary", "Andrew"]
+},
+{
+    "ranges": ["HF5001-6182", "HD28-70"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Business Administration"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["R690-697"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Business Medical"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["HD-HD9999"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Business Technology"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["NA", "NC730-795", "NK1510", "T353-385", "TA545-555", "TL11"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["CADD"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["QD1-999"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Chemistry"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["College 101"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Columbia Writers Series"],
+    "subjectLiaisons": ["Kevin"]
+},
+{
+    "ranges": ["NC1300-1766", "PN6700-6799"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Comic Books / Graphic Novels"],
+    "subjectLiaisons": ["Kevin", "Madeline"]
+},
+{
+    "ranges": ["BF637", "HD30-59", "HE7601-8700", "HF5717-6182", "HM131-1236", "JF515", "JK849", "KF241-4783", "LB1042.5-1572", "P1-99.5", "PN101-5650", "TR820", "Z116-265"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Communication Studies"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["QA75.5-76.9", "TA1-2040"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Computer Science & Engineering"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["Q300-390", "QA75-268", "T57-58", "TA1630-1650", "TK5105-7895"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Computer Technology"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["RC435-571", "BF1-940", "HF5381-5386", "LB1027-1091"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Counselor Education"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["PN80-1525", "P87-301", "PQ1-9999", "PR1-6126", "PS126-3576", "PT1-9999"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Creative Writing"],
+    "subjectLiaisons": ["Kevin"]
+},
+{
+    "ranges": ["TX1-1110"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Cuisine"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["RK1-9999", "QM1-QM695", "QP1-981"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Dental Hygiene"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["TL1-484", "TH90-815", "TJ751-805", "VM311-989"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Diesel Technology"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["PN1990-1995", "P87-96"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Digital Media Arts"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["PN1600-3307", "GT500-2370", "ND2885", "NK8802-NK8998"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Drama"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["DVDs / Videos (all subject areas)"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["LB5-3640", "HQ767-792", "HV701-1420", "LC3950-4806"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Early Childhood Education"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["HB-HF9999"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Economics"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["RC86-88.9", "RA645-646"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["EMT"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["TA-2040", "TC-1800", "TG-470", "TJ-1570", "TK-9971", "TN-997", "TP155-156"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Engineering"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["P-PZ9999"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["English"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["QH-9999", "GB400-2998", "GC-1581", "GE-350", "GF13-75", "HB849-850", "HC-76", "K3581-3582", "S583-900", "TD-1066"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Environmental Science"],
+    "subjectLiaisons": ["Zachary", "Andrew"]
+},
+{
+    "ranges": ["CS-9999"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Family Life - Parent & Child"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["G-9999", "GA-9999", "GB-9999", "GF101-127", "HF1021-1027"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Geography"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["GB-9999", "GC-9999", "QE-9999"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Geology"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["R858-864", "RA-1270"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Health Information Management"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["C-F9999"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["History"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["ESOL"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["IELP"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["PL501–889"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Japanese"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["PN4699-5650", "KF4770-4771", "P87-96", "Z657-659"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Journalism"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["K"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Law"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["P-PZ9999"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Literature"],
+    "subjectLiaisons": ["Kevin"]
+},
+{
+    "ranges": ["TJ-1570", "HD6331-6332", "HD8039-8040", "HD9680-9714", "HF5439-6568", "TN600-799", "TS200-770"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Machining Technology"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["HD28-70", "HD2321-9999", "HF5387-5734"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Management"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["QA-9999"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Math"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["Q180-390", "QA-9999", "T55-385", "TJ163-225", "TK5101-6720", "TK7800-8360", "TK9001-9401", "TS155-194"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Mechatronics"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["R728-729"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Medical Assisting"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["QC851-999"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Meteorology"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["M-MT9999"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Music"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["HG5548-5549", "T57-58", "TK5105-5106", "QA76-77"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Network Technology"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["QM-9999", "QP-9999", "R-RA9999", "RC-9999", "RJ-9999", "RM-9999", "RT-9999"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Nursing"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["QP141-185", "RA784-785", "RC620-627", "RM214-258", "TX341-641"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Nutrition"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["GC-9999", "QH541-542", "QK566-567", "QL120-713", "SH20-191", "SH201-399", "SH401-691"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Oceanography"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Open Educational Resources (OER)"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["RS1-441", "KF2915-2916"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Pharmacy Technician"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["B-9999"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Philosophy"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["RB45-46", "RC71-78"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Phlebotomy"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["GV201-1799", "RA773-788", "QM1-695", "QP-981"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Physical Education"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["Q1-295", "QH1-705", "QK1-989", "QL-991", "QM-695", "QP-989", "QR-502"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Physical Science"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["QC-9999", "QB460-466"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Physics"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["F192-205", "J1-981", "JA-92", "JC11-JC605", "JF20-2112", "JJ1000-JJ1019", "JK-9993", "JS39-8500", "JX-6650", "JZ5-6530", "KF-9827"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Political Science"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Leisure Reading"],
+    "subjectLiaisons": ["Marisol", "Madeline"]
+},
+{
+    "ranges": ["NC978-1000", "QA75-76", "T385-386", "TA1630-1650", "TK7882-7883"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Professional Technical Computational Skills"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["TX642-946"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Professional Baking and Pastry Arts"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["PE1400-1476", "T11-12"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Professional Technical Writing"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["BF1-727", "QP351-495", "RC435-571", "RJ499-507"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Psychology"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Reference"],
+    "subjectLiaisons": ["All"]
+},
+{
+    "ranges": ["N/A"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Renaissance Kids"],
+    "subjectLiaisons": ["Laura"]
+},
+{
+    "ranges": ["HM-9999"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Sociology"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["PC4001–4977", "PQ6001-8929"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Spanish"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["P95-99", "PN4001-4355", "HM1041-1281"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Speech"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["TA501-695", "TA703-712"],
+    "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
+    "departments": ["Surveying"],
+    "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["LB1050-1091", "LC5201-6660", "LC5800-5808", "PE1126-1129", "PE1460-1461"],
+    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "departments": ["Transitional Studies (CAP, ESL, HS21+, GED)"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
+    "ranges": ["TS200-770", "TN600-799"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Welding Technology"],
+    "subjectLiaisons": ["Katy"]
+},
+{
+    "ranges": ["HQ1100-2030"],
+    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
+    "departments": ["Women's Studies"],
+    "subjectLiaisons": ["Marisol"]
+},
+{
+    "ranges": ["PN6700-6790", "Z116-549"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Zines"],
+    "subjectLiaisons": ["Madeline"]
+}
+  ]; 
+
+document.getElementById("searchButton").addEventListener("click", function() {
+    const searchTerm = document.getElementById("searchTerm").value.trim().toUpperCase();
+    const searchType = document.querySelector('input[name="searchType"]:checked').value;
+    const resultsContainer = document.getElementById("results");
+
+    resultsContainer.innerHTML = "";
+    document.getElementById("searchTerm").value = "";
+
+    if (!searchTerm) {
+      resultsContainer.innerHTML = "<p>Please enter a search term.</p>";
+      return;
+    }
+
+    let results = [];
+
+    data.forEach(entry => {
+      if (searchType === "lcc") {
+        if (entry.ranges.some(range => isWithinRange(searchTerm, range))) {
+          results.push(entry);
+        }
+      } else if (searchType === "unit" && entry.instructionalUnit.toLowerCase().includes(searchTerm.toLowerCase())) {
+        results.push(entry);
+      } else if (searchType === "department" && entry.departments.some(dept => dept.toLowerCase().includes(searchTerm.toLowerCase()))) {
+        results.push(entry);
+      } else if (searchType === "liaison" && entry.subjectLiaisons.some(liaison => liaison.toLowerCase().includes(searchTerm.toLowerCase()))) {
+        results.push(entry);
+      }
+    });
+
+    if (results.length === 0) {
+      resultsContainer.innerHTML = "<p>No results found.</p>";
+      return;
+    }
+
+    results.forEach(entry => {
+      let resultHTML = `<p><strong>Instructional Unit:</strong> ${entry.instructionalUnit}</p>`;
+      resultHTML += `<p><strong>Departments:</strong> ${entry.departments.join(", ")}</p>`;
+      resultHTML += `<p><strong>Subject Liaisons:</strong> ${entry.subjectLiaisons.join(", ")}</p>`;
+      resultHTML += `<p><strong>Call Number Ranges:</strong> ${entry.ranges.join(", ")}</p>`;
+      resultsContainer.innerHTML += resultHTML + "<hr>";
+    });
+  });
+
+  function isWithinRange(searchTerm, range) {
+    searchTerm = searchTerm.toUpperCase();
+    range = range.toUpperCase();
+
+    if (range.includes("-")) {
+      const [start, end] = range.split("-");
+      return compareCallNumber(searchTerm, start) >= 0 && compareCallNumber(searchTerm, end) <= 0;
+    }
+
+    return compareCallNumber(searchTerm, range) === 0;
+  }
+
+  function compareCallNumber(callNumber, rangePart) {
+    const searchParts = splitCallNumber(callNumber);
+    const rangeParts = splitCallNumber(rangePart);
+
+    if (!searchParts || !rangeParts) {
+      return callNumber.startsWith(rangePart) ? 0 : -1;
+    }
+
+    if (searchParts.letters && rangeParts.letters) {
+      if (searchParts.letters !== rangeParts.letters) {
+        return searchParts.letters.startsWith(rangeParts.letters) ? 0 : -1;
+      }
+    } else if (rangeParts.letters) {
+      return -1;
+    }
+
+    if (searchParts.numbers !== null && rangeParts.numbers !== null) {
+      if (searchParts.numbers < rangeParts.numbers) {
+        return -1;
+      } else if (searchParts.numbers > rangeParts.numbers) {
+        return 1;
+      }
+    } else if (rangeParts.numbers !== null) {
+      return -1;
+    }
+
+    return 0;
+  }
+
+  function splitCallNumber(callNumber) {
+    const parts = callNumber.split(' ');
+    const lettersAndNumbers = parts[0].match(/([A-Z]+)(\d+\.?\d*)?/);
+    return {
+      letters: lettersAndNumbers ? lettersAndNumbers[1] : null,
+      numbers: lettersAndNumbers && lettersAndNumbers[2] ? parseFloat(lettersAndNumbers[2]) : null
+    };
+  }
+})();
+  </script>
+</body>
+</html>
