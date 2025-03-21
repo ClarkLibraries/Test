@@ -609,10 +609,23 @@ const liaisonLinks = {
                         results.push(entry);
                     } else if (searchType === "department" && entry.departments.some(dept => dept.toLowerCase().includes(searchTerm.toLowerCase()))) {
                         results.push(entry);
-                    } else if (searchType === "liaison" && entry.subjectLiaisons.some(liaison => liaison.toLowerCase().includes(searchTerm.toLowerCase()))) {
-                        results.push(entry);
-                    }
-                });
+                    } else if (searchType === "liaison") {
+        const searchTermParts = searchTerm.split(" ");
+
+        if (entry.subjectLiaisons.some(liaison => {
+            if (liaison.toLowerCase().includes(searchTerm.toLowerCase())) {
+                return true; // Match if the full name includes the search term
+            } else if (searchTermParts.length === 2) {
+                const lastNameFirst = `${searchTermParts[1]}, ${searchTermParts[0]}`.toLowerCase();
+                const firstNameLast = `${searchTermParts[0]} ${searchTermParts[1]}`.toLowerCase();
+                return liaison.toLowerCase().includes(lastNameFirst) || liaison.toLowerCase().includes(firstNameLast);
+            }
+            return false;
+        })) {
+            results.push(entry);
+        }
+    }
+});
 
                 if (results.length === 0) {
                     resultsContainer.innerHTML = "<p>No results found.</p>";
