@@ -67,15 +67,15 @@
     <input type="text" id="searchTerm" name="searchTerm">
 
     <fieldset>
-      <legend>Search By:</legend>
-      <input type="radio" id="searchLCC" name="searchType" value="lcc" checked>
-      <label for="searchLCC">LCC</label>
-      <input type="radio" id="searchUnit" name="searchType" value="unit">
-      <label for="searchUnit">Instructional Unit</label>
-      <input type="radio" id="searchDepartment" name="searchType" value="department">
-      <label for="searchDepartment">Department</label>
+      <legend></legend>
       <input type="radio" id="searchLiaison" name="searchType" value="liaison">
       <label for="searchLiaison">Subject Liaison</label>
+      <input type="radio" id="searchUnit" name="searchType" value="unit">
+      <label for="searchUnit">Unit</label>
+      <input type="radio" id="searchDepartment" name="searchType" value="department">
+      <label for="searchDepartment">Department</label>
+      <input type="radio" id="searchLCC" name="searchType" value="lcc" checked>
+      <label for="searchLCC">Call Number</label>
     </fieldset>
 
     <button id="searchButton">Search</button>
@@ -99,6 +99,12 @@
     "subjectLiaisons": ["Marisol"]
 },
 {
+    "ranges": ["TJ-1570", "HD6331-6332", "HD8039-8040", "HD9680-9714", "HF5439-6568", "TN600-799", "TS200-770"],
+    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
+    "departments": ["Advanced Manufacturing"],
+    "subjectLiaisons": ["Katy"]
+},
+{
     "ranges": ["GV201-1198.995", "R855-920", "RC71-78.7", "RC620-627", "RC1200-1245", "RD792-811", "RJ206-235", "RM182-259", "RM695-950"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Allied Health"],
@@ -106,7 +112,7 @@
 },
 {
     "ranges": ["HV1551-3024"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["American Sign Language"],
     "subjectLiaisons": ["Zachary"]
 },
@@ -118,7 +124,7 @@
 },
 {
     "ranges": ["N-NX"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Art"],
     "subjectLiaisons": ["Kevin"]
 },
@@ -159,6 +165,12 @@
     "subjectLiaisons": ["Marisol"]
 },
 {
+    "ranges": ["LB1050-1091", "LC5201-6660", "LC5800-5808", "PE1126-1129", "PE1460-1461"],
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
+    "departments": ["BEdA (CAP, ESL, HS21+, GED)"],
+    "subjectLiaisons": ["Andrea"]
+},
+{
     "ranges": ["QH1-671", "QK1-989", "QL1-991", "QM1-695", "QP1-695", "QR1-502"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Biology"],
@@ -195,16 +207,16 @@
     "subjectLiaisons": ["Zachary"]
 },
 {
-    "ranges": ["N/A"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "ranges": ["A1-Z9999"],
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["College 101"],
     "subjectLiaisons": ["Andrea"]
 },
 {
-    "ranges": ["N/A"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "ranges": ["PN80-1525", "P87-301", "PQ1-9999", "PR1-6126", "PS126-3576", "PT1-9999"],
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Columbia Writers Series"],
-    "subjectLiaisons": ["Kevin"]
+    "subjectLiaisons": ["Katy", "Kevin"]
 },
 {
     "ranges": ["NC1300-1766", "PN6700-6799"],
@@ -214,7 +226,7 @@
 },
 {
     "ranges": ["BF637", "HD30-59", "HE7601-8700", "HF5717-6182", "HM131-1236", "JF515", "JK849", "KF241-4783", "LB1042.5-1572", "P1-99.5", "PN101-5650", "TR820", "Z116-265"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Communication Studies"],
     "subjectLiaisons": ["Andrea"]
 },
@@ -238,7 +250,7 @@
 },
 {
     "ranges": ["PN80-1525", "P87-301", "PQ1-9999", "PR1-6126", "PS126-3576", "PT1-9999"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Creative Writing"],
     "subjectLiaisons": ["Kevin"]
 },
@@ -273,7 +285,7 @@
     "subjectLiaisons": ["Marisol"]
 },
 {
-    "ranges": ["N/A"],
+    "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["DVDs / Videos (all subject areas)"],
     "subjectLiaisons": ["Zachary"]
@@ -304,9 +316,9 @@
 },
 {
     "ranges": ["P-PZ9999"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["English"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Kevin"]
 },
 {
     "ranges": ["QH-9999", "GB400-2998", "GC-1581", "GE-350", "GF13-75", "HB849-850", "HC-76", "K3581-3582", "S583-900", "TD-1066"],
@@ -345,20 +357,14 @@
     "subjectLiaisons": ["Andrea"]
 },
 {
-    "ranges": ["ESOL"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
-    "departments": ["IELP"],
-    "subjectLiaisons": ["Andrea"]
-},
-{
     "ranges": ["PL501–889"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Japanese"],
     "subjectLiaisons": ["Marisol"]
 },
 {
     "ranges": ["PN4699-5650", "KF4770-4771", "P87-96", "Z657-659"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Journalism"],
     "subjectLiaisons": ["Andrea"]
 },
@@ -369,16 +375,10 @@
     "subjectLiaisons": ["Katy"]
 },
 {
-    "ranges": ["P-PZ9999"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
-    "departments": ["Literature"],
-    "subjectLiaisons": ["Kevin"]
-},
-{
-    "ranges": ["TJ-1570", "HD6331-6332", "HD8039-8040", "HD9680-9714", "HF5439-6568", "TN600-799", "TS200-770"],
-    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
-    "departments": ["Machining Technology"],
-    "subjectLiaisons": ["Katy"]
+    "ranges": ["A1-Z9999"],
+    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
+    "departments": ["Leisure Reading"],
+    "subjectLiaisons": ["Marisol", "Madeline"]
 },
 {
     "ranges": ["HD28-70", "HD2321-9999", "HF5387-5734"],
@@ -420,7 +420,7 @@
     "ranges": ["HG5548-5549", "T57-58", "TK5105-5106", "QA76-77"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Network Technology"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Marisol"]
 },
 {
     "ranges": ["QM-9999", "QP-9999", "R-RA9999", "RC-9999", "RJ-9999", "RM-9999", "RT-9999"],
@@ -441,7 +441,7 @@
     "subjectLiaisons": ["Zachary"]
 },
 {
-    "ranges": ["N/A"],
+    "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Open Educational Resources (OER)"],
     "subjectLiaisons": ["Katy"]
@@ -454,7 +454,7 @@
 },
 {
     "ranges": ["B-9999"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Philosophy"],
     "subjectLiaisons": ["Andrea"]
 },
@@ -489,16 +489,10 @@
     "subjectLiaisons": ["Marisol"]
 },
 {
-    "ranges": ["N/A"],
-    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
-    "departments": ["Leisure Reading"],
-    "subjectLiaisons": ["Marisol", "Madeline"]
-},
-{
     "ranges": ["NC978-1000", "QA75-76", "T385-386", "TA1630-1650", "TK7882-7883"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Professional Technical Computational Skills"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Marisol"]
 },
 {
     "ranges": ["TX642-946"],
@@ -508,7 +502,7 @@
 },
 {
     "ranges": ["PE1400-1476", "T11-12"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Professional Technical Writing"],
     "subjectLiaisons": ["Andrea"]
 },
@@ -519,13 +513,13 @@
     "subjectLiaisons": ["Marisol"]
 },
 {
-    "ranges": ["N/A"],
+    "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Reference"],
-    "subjectLiaisons": ["All"]
+    "subjectLiaisons": ["Zachary", "Katy", "Kevin", "Laura", "Marisol", "Andrea"]
 },
 {
-    "ranges": ["N/A"],
+    "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Renaissance Kids"],
     "subjectLiaisons": ["Laura"]
@@ -538,27 +532,27 @@
 },
 {
     "ranges": ["PC4001–4977", "PQ6001-8929"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Spanish"],
     "subjectLiaisons": ["Marisol"]
 },
 {
     "ranges": ["P95-99", "PN4001-4355", "HM1041-1281"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
+    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Speech"],
     "subjectLiaisons": ["Zachary"]
+},
+{
+    "ranges": ["R", "RC", "RD", "RM", "Q", "QM"],
+    "instructionalUnit": "Business & Health Sciences (BHS)",
+    "departments": ["Surgical Technology"],
+    "subjectLiaisons": ["Laura"]
 },
 {
     "ranges": ["TA501-695", "TA703-712"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Surveying"],
     "subjectLiaisons": ["Zachary"]
-},
-{
-    "ranges": ["LB1050-1091", "LC5201-6660", "LC5800-5808", "PE1126-1129", "PE1460-1461"],
-    "instructionalUnit": "Transitional Studies, English, Communications & Humanities (BEECH)",
-    "departments": ["Transitional Studies (CAP, ESL, HS21+, GED)"],
-    "subjectLiaisons": ["Andrea"]
 },
 {
     "ranges": ["TS200-770", "TN600-799"],
@@ -580,99 +574,133 @@
 }
   ]; 
 
-document.getElementById("searchButton").addEventListener("click", function() {
-    const searchTerm = document.getElementById("searchTerm").value.trim().toUpperCase();
-    const searchType = document.querySelector('input[name="searchType"]:checked').value;
-    const resultsContainer = document.getElementById("results");
+const liaisonLinks = {
+                "Anastasi, Kathryn (Katy)": "<a href=\"https://library.clark.edu/staff/anastasi-kathryn-katy\">Anastasi, Kathryn (Katy)</a>",
+                "Berg, Andrea": "<a href=\"https://library.clark.edu/staff/berg-andrea\">Berg, Andrea</a>",
+                "Edwards, Kevin": "<a href=\"https://library.clark.edu/staff/edwards-kevin\">Edwards, Kevin</a>",
+                "Grant, Zachary": "<a href=\"https://library.clark.edu/staff/grant-zachary\">Grant, Zachary</a>",
+                "Moreno Ortiz, Marisol": "<a href=\"https://library.clark.edu/staff/moreno-ortiz-marisol\">Moreno Ortiz, Marisol</a>",
+                "Nagel, Laura": "<a href=\"https://library.clark.edu/staff/nagel-laura\">Nagel, Laura</a>",
+                "Robert, Madeline": "<a href=\"https://library.clark.edu/staff/madeline-robert\">Robert, Madeline</a>",
+                "Shaman, Andrew": "<a href=\"https://library.clark.edu/staff/shaman-andrew\">Shaman, Andrew</a>"
+            };
 
-    resultsContainer.innerHTML = "";
-    document.getElementById("searchTerm").value = "";
+            document.getElementById("searchButton").addEventListener("click", function() {
+                const searchTerm = document.getElementById("searchTerm").value.trim().toUpperCase();
+                const searchType = document.querySelector('input[name="searchType"]:checked').value;
+                const resultsContainer = document.getElementById("results");
 
-    if (!searchTerm) {
-      resultsContainer.innerHTML = "<p>Please enter a search term.</p>";
-      return;
-    }
+                resultsContainer.innerHTML = "";
+                document.getElementById("searchTerm").value = "";
 
-    let results = [];
+                if (!searchTerm) {
+                    resultsContainer.innerHTML = "<p>Please enter a search term.</p>";
+                    return;
+                }
 
-    data.forEach(entry => {
-      if (searchType === "lcc") {
-        if (entry.ranges.some(range => isWithinRange(searchTerm, range))) {
-          results.push(entry);
-        }
-      } else if (searchType === "unit" && entry.instructionalUnit.toLowerCase().includes(searchTerm.toLowerCase())) {
-        results.push(entry);
-      } else if (searchType === "department" && entry.departments.some(dept => dept.toLowerCase().includes(searchTerm.toLowerCase()))) {
-        results.push(entry);
-      } else if (searchType === "liaison" && entry.subjectLiaisons.some(liaison => liaison.toLowerCase().includes(searchTerm.toLowerCase()))) {
-        results.push(entry);
-      }
-    });
+                let results = [];
 
-    if (results.length === 0) {
-      resultsContainer.innerHTML = "<p>No results found.</p>";
-      return;
-    }
+                data.forEach(entry => {
+                    if (searchType === "lcc") {
+                        if (entry.ranges.some(range => isWithinRange(searchTerm, range))) {
+                            results.push(entry);
+                        }
+                    } else if (searchType === "unit" && entry.instructionalUnit.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        results.push(entry);
+                    } else if (searchType === "department" && entry.departments.some(dept => dept.toLowerCase().includes(searchTerm.toLowerCase()))) {
+                        results.push(entry);
+                    } else if (searchType === "liaison" && entry.subjectLiaisons.some(liaison => liaison.toLowerCase().includes(searchTerm.toLowerCase()))) {
+                        results.push(entry);
+                    }
+                });
 
-    results.forEach(entry => {
-      let resultHTML = `<p><strong>Instructional Unit:</strong> ${entry.instructionalUnit}</p>`;
-      resultHTML += `<p><strong>Departments:</strong> ${entry.departments.join(", ")}</p>`;
-      resultHTML += `<p><strong>Subject Liaisons:</strong> ${entry.subjectLiaisons.join(", ")}</p>`;
-      resultHTML += `<p><strong>Call Number Ranges:</strong> ${entry.ranges.join(", ")}</p>`;
-      resultsContainer.innerHTML += resultHTML + "<hr>";
-    });
-  });
+                if (results.length === 0) {
+                    resultsContainer.innerHTML = "<p>No results found.</p>";
+                    return;
+                }
 
-  function isWithinRange(searchTerm, range) {
-    searchTerm = searchTerm.toUpperCase();
-    range = range.toUpperCase();
+                results.forEach(entry => {
+                    let resultHTML = `<p><strong>Departments:</strong> ${entry.departments.join(", ")}</p>`;
+                    resultHTML += `<p><strong>Instructional Unit:</strong> ${entry.instructionalUnit}</p>`;
 
-    if (range.includes("-")) {
-      const [start, end] = range.split("-");
-      return compareCallNumber(searchTerm, start) >= 0 && compareCallNumber(searchTerm, end) <= 0;
-    }
+                    const liaisons = entry.subjectLiaisons.map(liaison => {
+                        // Corrected: find the full name in liaisonLinks object
+                        const fullName = Object.keys(liaisonLinks).find(key => key.includes(liaison));
+                        if (fullName) {
+                            return liaisonLinks[fullName];
+                        } else {
+                            return liaison;
+                        }
+                    }).join(", ");
 
-    return compareCallNumber(searchTerm, range) === 0;
-  }
+                    resultHTML += `<p><strong>Subject Liaisons:</strong> ${liaisons}</p>`;
+                    resultHTML += `<p><strong>Call Number Ranges:</strong> ${entry.ranges.join(", ")}</p>`;
+                    resultsContainer.innerHTML += resultHTML + "<hr>";
+                });
+            });
 
-  function compareCallNumber(callNumber, rangePart) {
-    const searchParts = splitCallNumber(callNumber);
-    const rangeParts = splitCallNumber(rangePart);
+            function isWithinRange(searchTerm, range) {
+                searchTerm = searchTerm.toUpperCase();
+                range = range.toUpperCase();
 
-    if (!searchParts || !rangeParts) {
-      return callNumber.startsWith(rangePart) ? 0 : -1;
-    }
+                if (range.includes("-")) {
+                    const [start, end] = range.split("-");
+                    return compareCallNumber(searchTerm, start) >= 0 && compareCallNumber(searchTerm, end) <= 0;
+                }
 
-    if (searchParts.letters && rangeParts.letters) {
-      if (searchParts.letters !== rangeParts.letters) {
-        return searchParts.letters.startsWith(rangeParts.letters) ? 0 : -1;
-      }
-    } else if (rangeParts.letters) {
-      return -1;
-    }
+                return compareCallNumber(searchTerm, range) === 0;
+            }
 
-    if (searchParts.numbers !== null && rangeParts.numbers !== null) {
-      if (searchParts.numbers < rangeParts.numbers) {
-        return -1;
-      } else if (searchParts.numbers > rangeParts.numbers) {
-        return 1;
-      }
-    } else if (rangeParts.numbers !== null) {
-      return -1;
-    }
+            function compareCallNumber(callNumber, rangePart) {
+                const searchParts = splitCallNumber(callNumber);
+                const rangeParts = splitCallNumber(rangePart);
 
-    return 0;
-  }
+                if (!searchParts || !rangeParts) {
+                    return callNumber.startsWith(rangePart) ? 0 : -1;
+                }
 
-  function splitCallNumber(callNumber) {
-    const parts = callNumber.split(' ');
-    const lettersAndNumbers = parts[0].match(/([A-Z]+)(\d+\.?\d*)?/);
-    return {
-      letters: lettersAndNumbers ? lettersAndNumbers[1] : null,
-      numbers: lettersAndNumbers && lettersAndNumbers[2] ? parseFloat(lettersAndNumbers[2]) : null
-    };
-  }
-})();
-  </script>
+                if (searchParts.letters && rangeParts.letters) {
+                    if (searchParts.letters !== rangeParts.letters) {
+                        return searchParts.letters.startsWith(rangeParts.letters) ? 0 : -1;
+                    }
+                } else if (rangeParts.letters) {
+                    return -1;
+                }
+
+                if (searchParts.numbers !== null && rangeParts.numbers !== null) {
+                    if (searchParts.numbers < rangeParts.numbers) {
+                        return -1;
+                    } else if (searchParts.numbers > rangeParts.numbers) {
+                        return 1;
+                    }
+                } else if (rangeParts.numbers !== null) {
+                    return -1;
+                }
+
+                return 0;
+            }
+
+            function splitCallNumber(callNumber) {
+                const parts = callNumber.split(' ');
+                const lettersAndNumbers = parts[0].match(/([A-Z]+)(\d+\.?\d*)?/);
+                let numbers = lettersAndNumbers && lettersAndNumbers[2] ? parseFloat(lettersAndNumbers[2]) : null;
+
+                if (numbers === NaN){
+                  numbers = null;
+                }
+
+                return {
+                    letters: lettersAndNumbers ? lettersAndNumbers[1] : null,
+                    numbers: numbers
+                };
+            }
+
+            document.getElementById("searchTerm").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    document.getElementById("searchButton").click();
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
