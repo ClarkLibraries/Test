@@ -90,487 +90,487 @@
     "ranges": ["HF5601-5689", "HG1-HG9999", "KF6200-6800"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Accounting"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["HV5001-5840", "RC563-RC568"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Addiction"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["TJ-1570", "HD6331-6332", "HD8039-8040", "HD9680-9714", "HF5439-6568", "TN600-799", "TS200-770"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Advanced Manufacturing"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["GV201-1198.995", "R855-920", "RC71-78.7", "RC620-627", "RC1200-1245", "RD792-811", "RJ206-235", "RM182-259", "RM695-950"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Allied Health"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["HV1551-3024"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["American Sign Language"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["CC1-CC960", "E51-E74", "E75-E100", "GN1-GN950", "GR1-GR950", "GT1-GT9999", "HT1501-HT1595"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Anthropology"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["N-NX"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Art"],
-    "subjectLiaisons": ["Kevin"]
+    "subjectLiaisons": ["Edwards, Kevin"]
 },
 {
     "ranges": ["QB"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Astronomy"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["TL"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Automotive Technology"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["HD-HF"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["BAS Applied Management - BASAM"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["Q300-Q390", "QA71-QA76.95", "QA76.75-QA76.765", "T58.5-T58.64"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["BAS Cybersecurity"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["HM811-1281", "HQ1-2030", "HV1-9960"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["BAS Human Services - BASHS"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["L-L9999", "LA1-9999", "LB5-3095", "LC"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["BAS Teacher Education - BASTE"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["LB1050-1091", "LC5201-6660", "LC5800-5808", "PE1126-1129", "PE1460-1461"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["BEdA (CAP, ESL, HS21+, GED)"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["QH1-671", "QK1-989", "QL1-991", "QM1-695", "QP1-695", "QR1-502"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Biology"],
-    "subjectLiaisons": ["Zachary", "Andrew"]
+    "subjectLiaisons": ["Grant, Zachary", "Shaman, Andrew"]
 },
 {
     "ranges": ["HF5001-6182", "HD28-70"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Business Administration"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["R690-697"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Business Medical"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["HD-HD9999"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Business Technology"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["NA", "NC730-795", "NK1510", "T353-385", "TA545-555", "TL11"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["CADD"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["QD1-999"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Chemistry"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["A1-Z9999"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["College 101"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["PN80-1525", "P87-301", "PQ1-9999", "PR1-6126", "PS126-3576", "PT1-9999"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Columbia Writers Series"],
-    "subjectLiaisons": ["Katy", "Kevin"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)", "Edwards, Kevin"]
 },
 {
     "ranges": ["NC1300-1766", "PN6700-6799"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Comic Books / Graphic Novels"],
-    "subjectLiaisons": ["Kevin", "Madeline"]
+    "subjectLiaisons": ["Edwards, Kevin", "Robert, Madeline"]
 },
 {
     "ranges": ["BF637", "HD30-59", "HE7601-8700", "HF5717-6182", "HM131-1236", "JF515", "JK849", "KF241-4783", "LB1042.5-1572", "P1-99.5", "PN101-5650", "TR820", "Z116-265"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Communication Studies"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["QA75.5-76.9", "TA1-2040"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Computer Science & Engineering"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["Q300-390", "QA75-268", "T57-58", "TA1630-1650", "TK5105-7895"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Computer Technology"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["RC435-571", "BF1-940", "HF5381-5386", "LB1027-1091"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Counselor Education"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["PN80-1525", "P87-301", "PQ1-9999", "PR1-6126", "PS126-3576", "PT1-9999"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Creative Writing"],
-    "subjectLiaisons": ["Kevin"]
+    "subjectLiaisons": ["Edwards, Kevin"]
 },
 {
     "ranges": ["TX1-1110"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Cuisine"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["RK1-9999", "QM1-QM695", "QP1-981"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Dental Hygiene"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["TL1-484", "TH90-815", "TJ751-805", "VM311-989"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Diesel Technology"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["PN1990-1995", "P87-96"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Digital Media Arts"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["PN1600-3307", "GT500-2370", "ND2885", "NK8802-NK8998"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Drama"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["DVDs / Videos (all subject areas)"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["LB5-3640", "HQ767-792", "HV701-1420", "LC3950-4806"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Early Childhood Education"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["HB-HF9999"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Economics"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["RC86-88.9", "RA645-646"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["EMT"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["TA-2040", "TC-1800", "TG-470", "TJ-1570", "TK-9971", "TN-997", "TP155-156"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Engineering"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["P-PZ9999"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["English"],
-    "subjectLiaisons": ["Kevin"]
+    "subjectLiaisons": ["Edwards, Kevin"]
 },
 {
     "ranges": ["QH-9999", "GB400-2998", "GC-1581", "GE-350", "GF13-75", "HB849-850", "HC-76", "K3581-3582", "S583-900", "TD-1066"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Environmental Science"],
-    "subjectLiaisons": ["Zachary", "Andrew"]
+    "subjectLiaisons": ["Grant, Zachary", "Shaman, Andrew"]
 },
 {
     "ranges": ["CS-9999"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Family Life - Parent & Child"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["G-9999", "GA-9999", "GB-9999", "GF101-127", "HF1021-1027"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Geography"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["GB-9999", "GC-9999", "QE-9999"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Geology"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["R858-864", "RA-1270"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Health Information Management"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["C-F9999"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["History"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["PL501–889"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Japanese"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["PN4699-5650", "KF4770-4771", "P87-96", "Z657-659"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Journalism"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["K"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Law"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Leisure Reading"],
-    "subjectLiaisons": ["Marisol", "Madeline"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol", "Robert, Madeline"]
 },
 {
     "ranges": ["HD28-70", "HD2321-9999", "HF5387-5734"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Management"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["QA-9999"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Math"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["Q180-390", "QA-9999", "T55-385", "TJ163-225", "TK5101-6720", "TK7800-8360", "TK9001-9401", "TS155-194"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Mechatronics"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["R728-729"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Medical Assisting"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["QC851-999"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Meteorology"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["M-MT9999"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Music"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["HG5548-5549", "T57-58", "TK5105-5106", "QA76-77"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Network Technology"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["QM-9999", "QP-9999", "R-RA9999", "RC-9999", "RJ-9999", "RM-9999", "RT-9999"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Nursing"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["QP141-185", "RA784-785", "RC620-627", "RM214-258", "TX341-641"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Nutrition"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["GC-9999", "QH541-542", "QK566-567", "QL120-713", "SH20-191", "SH201-399", "SH401-691"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Oceanography"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Open Educational Resources (OER)"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["RS1-441", "KF2915-2916"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Pharmacy Technician"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["B-9999"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Philosophy"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["RB45-46", "RC71-78"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Phlebotomy"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["GV201-1799", "RA773-788", "QM1-695", "QP-981"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Physical Education"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["Q1-295", "QH1-705", "QK1-989", "QL-991", "QM-695", "QP-989", "QR-502"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Physical Science"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["QC-9999", "QB460-466"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Physics"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["F192-205", "J1-981", "JA-92", "JC11-JC605", "JF20-2112", "JJ1000-JJ1019", "JK-9993", "JS39-8500", "JX-6650", "JZ5-6530", "KF-9827"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Political Science"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["NC978-1000", "QA75-76", "T385-386", "TA1630-1650", "TK7882-7883"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Professional Technical Computational Skills"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["TX642-946"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Professional Baking and Pastry Arts"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["PE1400-1476", "T11-12"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Professional Technical Writing"],
-    "subjectLiaisons": ["Andrea"]
+    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["BF1-727", "QP351-495", "RC435-571", "RJ499-507"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Psychology"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Reference"],
-    "subjectLiaisons": ["Zachary", "Katy", "Kevin", "Laura", "Marisol", "Andrea"]
+    "subjectLiaisons": ["Grant, Zachary", "Anastasi, Kathryn (Katy)", "Edwards, Kevin", "Nagel, Laura", "Moreno Ortiz, Marisol", "Berg, Andrea"]
 },
 {
     "ranges": ["A1-Z9999"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Renaissance Kids"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["HM-9999"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Sociology"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["PC4001–4977", "PQ6001-8929"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Spanish"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["P95-99", "PN4001-4355", "HM1041-1281"],
     "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
     "departments": ["Speech"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["R", "RC", "RD", "RM", "Q", "QM"],
     "instructionalUnit": "Business & Health Sciences (BHS)",
     "departments": ["Surgical Technology"],
-    "subjectLiaisons": ["Laura"]
+    "subjectLiaisons": ["Nagel, Laura"]
 },
 {
     "ranges": ["TA501-695", "TA703-712"],
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Surveying"],
-    "subjectLiaisons": ["Zachary"]
+    "subjectLiaisons": ["Grant, Zachary"]
 },
 {
     "ranges": ["TS200-770", "TN600-799"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Welding Technology"],
-    "subjectLiaisons": ["Katy"]
+    "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
 },
 {
     "ranges": ["HQ1100-2030"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Women's Studies"],
-    "subjectLiaisons": ["Marisol"]
+    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["PN6700-6790", "Z116-549"],
     "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
     "departments": ["Zines"],
-    "subjectLiaisons": ["Madeline"]
+    "subjectLiaisons": ["Robert, Madeline"]
 }
   ]; 
 
