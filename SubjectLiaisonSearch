@@ -285,12 +285,6 @@
     "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
-    "ranges": ["A1-Z9999"],
-    "instructionalUnit": "Clark Libraries & Academic Success Services (CLASS)",
-    "departments": ["DVDs / Videos (all subject areas)"],
-    "subjectLiaisons": ["Grant, Zachary"]
-},
-{
     "ranges": ["LB5-3640", "HQ767-792", "HV701-1420", "LC3950-4806"],
     "instructionalUnit": "Social Science & Fine Arts (SOFA)",
     "departments": ["Early Childhood Education"],
@@ -325,12 +319,6 @@
     "instructionalUnit": "Science, Technology, Engineering & Math (STEM)",
     "departments": ["Environmental Science"],
     "subjectLiaisons": ["Grant, Zachary", "Shaman, Andrew"]
-},
-{
-    "ranges": ["CS-9999"],
-    "instructionalUnit": "Social Science & Fine Arts (SOFA)",
-    "departments": ["Family Life - Parent & Child"],
-    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
     "ranges": ["G-9999", "GA-9999", "GB-9999", "GF101-127", "HF1021-1027"],
@@ -489,22 +477,10 @@
     "subjectLiaisons": ["Moreno Ortiz, Marisol"]
 },
 {
-    "ranges": ["NC978-1000", "QA75-76", "T385-386", "TA1630-1650", "TK7882-7883"],
-    "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
-    "departments": ["Professional Technical Computational Skills"],
-    "subjectLiaisons": ["Moreno Ortiz, Marisol"]
-},
-{
     "ranges": ["TX642-946"],
     "instructionalUnit": "Workforce, Professional Technical Education + STEM (WPTE)",
     "departments": ["Professional Baking and Pastry Arts"],
     "subjectLiaisons": ["Anastasi, Kathryn (Katy)"]
-},
-{
-    "ranges": ["PE1400-1476", "T11-12"],
-    "instructionalUnit": "Basic Education, English, Communications & Humanities (BEECH)",
-    "departments": ["Professional Technical Writing"],
-    "subjectLiaisons": ["Berg, Andrea"]
 },
 {
     "ranges": ["BF1-727", "QP351-495", "RC435-571", "RJ499-507"],
