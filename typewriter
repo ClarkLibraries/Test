@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hermes 3000 Typewriter</title>
+    <style>
+        /* ... (Your existing CSS) ... */
+        .hermes-3000-widget * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .hermes-3000-widget {
+            font-family: 'Courier Prime', sans-serif;
+            width: 100%;
+            max-width: 900px;
+            background-color: #A5D6A7;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 -10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+        }
+
+        .typewriter-base {
+            background-color: #4a4a4a;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            position: relative;
+        }
+
+        .left-panel {
+            width: 80px;
+            background-color: #6a6a6a;
+            border-radius: 10px 0 0 10px;
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .platen-knobs {
+            position: absolute;
+            top: 30px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .platen-knob {
+            width: 40px;
+            height: 40px;
+            background-color: #A5D6A7;
+            border-radius: 50%;
+            border: 4px solid #4a4a4a;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .paper-area {
+            flex-grow: 1;
+            background-color: #f4efe0;
+            border-radius: 5px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        .paper-margin {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        #paper {
+            height: 100%;
+            padding: 20px;
+            font-family: 'Courier Prime', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(to right, transparent 40px, #d3d3d350 40px, transparent 41px), linear-gradient(#f5f5f500 0, #f5f5f500 1.2em, transparent 1.2em);
+            background-size: 100% 1.2em;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-y: auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            outline: none;
+        }
+
+        .input-area {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            height: 60px;
+        }
+
+        #text-input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #4a4a4a;
+            height: 100%;
+        }
+
+        .start-typing-btn, .clear-paper-btn {
+            background-color: #4a4a4a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            height: 100%;
+            white-space: normal;
+        }
+
+        .start-typing-btn:hover, .clear-paper-btn:hover {
+            background-color: #6a6a6a;
+        }
+
+        .keyboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 20px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .keyboard-row {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .key {
+            background-color: #6a6a6a;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 16px;
+            text-transform: uppercase;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .key.wide {
+            flex-grow: 1.5;
+        }
+
+        .key.tab {
+            width: 60px;
+        }
+
+        .key.backspace {
+            width: 80px;
+        }
+
+        .key.caps {
+            width: 70px;
+        }
+
+        .key.enter {
+            width: 90px;
+        }
+
+        .key.shift {
+            width: 100px;
+        }
+
+        .key.space {
+            width: 300px;
+        }
+
+        .key:hover {
+            background-color: #8a8a8a;
+        }
+
+        .key.active, .key.typing {
+            background-color: #A5D6A7;
+            color: #4a4a4a;
+            transform: translateY(2px);
+            box-shadow: 0 0 4px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .carriage-return {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            width: 40px;
+            height: 15px;
+            background-color: #6a6a6a;
+            transform: skew(-20deg);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .download-btn {
+            display: block;
+            width: 20%;
+            background-color: #4a4a4a;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.2s;}
+
+        .download-btn:hover {
+            background-color: #6a6a6a;
+        }
+
+        #paper .cursor {
+            animation: blink 0.7s infinite;
+            border-right: 2px solid #2c3e50;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .madlib-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #6a6a6a;
+            border-radius: 5px;
+            height: 60px;
+        }
+
+        .madlib-controls label {
+            color: white;
+            margin-right: 10px;
+        }
+
+        .madlib-controls select {
+            padding: 5px;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+
+        .madlib-btn {
+            background-color: #A5D6A7;
+            color: #4a4a4a;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .madlib-btn:hover {
+            background-color: #81c784;
+        }
+   </style>
+</head>
+<body>
+    <div class="hermes-3000-widget">
+        <div class="typewriter-base">
+            <div class="left-panel">
+                <div class="platen-knobs">
+                    <div class="platen-knob left-knob"></div>
+                    <div class="platen-knob right-knob"></div>
+                </div>
+            </div>
+            <div class="paper-area">
+                <div class="paper-margin"></div>
+                <div id="paper" contenteditable="true" aria-label="Type your document"></div>
+                <div class="carriage-return"></div>
+            </div>
+        </div>
+        <div class="input-area">
+            <button class="clear-paper-btn">AC</button>
+            <textarea id="text-input" placeholder="Paste your text here..."></textarea>
+            <button class="start-typing-btn">Start Typing</button>
+        </div>
+        <div class="madlib-controls">
+            <label for="madlib-intensity">Madlib Intensity:</label>
+            <select id="madlib-intensity">
+                <option value="little">A Little</option>
+                <option value="some" selected>Some</option>
+                <option value="many">Many</option>
+                <option value="most">Most</option>
+            </select>
+            <button class="madlib-btn">MadLib It</button>
+        </div>
+        <div class="keyboard-container" id="keyboard">
+            <div class="keyboard-row">
+                <span class="key">q</span>
+                <span class="key">w</span>
+                <span class="key">e</span>
+                <span class="key">r</span>
+                <span class="key">t</span>
+                <span class="key">y</span>
+                <span class="key">u</span>
+                <span class="key">i</span>
+                <span class="key">o</span>
+                <span class="key">p</span>
+                <span class="key backspace">←</span>
+            </div>
+            <div class="keyboard-row">
+                <span class="key tab">tab</span>
+                <span class="key">a</span>
+                <span class="key">s</span>
+                <span class="key">d</span>
+                <span class="key">f</span>
+                <span class="key">g</span>
+                <span class="key">h</span>
+                <span class="key">j</span>
+                <span class="key">k</span>
+                <span class="key">l</span>
+                <span class="key enter">↵</span>
+            </div>
+            <div class="keyboard-row">
+                <span class="key shift">shift</span>
+                <span class="key">z</span>
+                <span class="key">x</span>
+                <span class="key">c</span>
+                <span class="key">v</span>
+                <span class="key">b</span>
+                <span class="key">n</span>
+                <span class="key">m</span>
+                <span class="key shift">shift</span>
+            </div>
+            <div class="keyboard-row">
+                <span class="key space">space</span>
+            </div>
+        </div>
+
+</div>
+    <button class="download-btn">Download Text File</button>
+    <script>
+(function() {
+    const widget = document.querySelector('.hermes-3000-widget');
+    const paper = widget.querySelector('#paper');
+    const keyboard = widget.querySelector('#keyboard');
+    const keys = keyboard.querySelectorAll('.key');
+    const platenKnobs = widget.querySelectorAll('.platen-knob');
+    const carriageReturn = widget.querySelector('.carriage-return');
+    const downloadBtn = widget.querySelector('.download-btn');
+    const textInput = widget.querySelector('#text-input');
+    const startTypingBtn = widget.querySelector('.start-typing-btn');
+    const madlibBtn = widget.querySelector('.madlib-btn');
+    const madlibIntensity = widget.querySelector('#madlib-intensity');
+    const clearPaperBtn = widget.querySelector('.clear-paper-btn');
+
+    let typingInProgress = false;
+    let stopTyping = false;
+
+    // Updated MadLib Function
+    function createMadlib(text, intensity) {
+        const words = text.split(/\s+/);
+        const madlibWords = [...words];
+
+        const intensityMap = {
+            'little': Math.floor(words.length * 0.05),   // 5 out of 100
+            'some': Math.floor(words.length * 0.25),
+            'many': Math.floor(words.length * 0.5),
+            'most': Math.floor(words.length * 0.5)  // Approximating 60 out of 120
+        };
+
+        const wordsToReplace = intensityMap[intensity];
+        let replacedCount = 0;
+        const usedIndexes = new Set();
+
+        while (replacedCount < wordsToReplace) {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            if (usedIndexes.has(randomIndex) || words[randomIndex].length < 3) continue;
+            madlibWords[randomIndex] = '[___]';
+            usedIndexes.add(randomIndex);
+            replacedCount++;
+        }
+
+        return madlibWords.join(' ');
+    }
+
+    function activateKey(key) {
+        const keyElement = keyboard.querySelector(`.key[data-key="${key}"]`) ||
+            Array.from(keys).find(k => k.textContent.toLowerCase() === key);
+
+        if (keyElement) {
+            keyElement.classList.add('active');
+            setTimeout(() => keyElement.classList.remove('active'), 100);
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.target === paper) {
+            const key = event.key.toLowerCase();
+            activateKey(key);
+        }
+    });
+
+    keys.forEach(key => {
+        key.addEventListener('mousedown', function(event) {
+            event.preventDefault();
+            const keyValue = this.textContent.toLowerCase();
+
+            if (keyValue === '←') {
+                document.execCommand('delete', false, null);
+            } else if (keyValue === '↵') {
+                document.execCommand('insertLineBreak', false, null);
+            } else if (keyValue === 'space') {
+                document.execCommand('insertText', false, ' ');
+            } else if (keyValue.length === 1) {
+                document.execCommand('insertText', false, keyValue);
+            }
+
+            this.classList.add('active');
+            setTimeout(() => this.classList.remove('active'), 100);
+
+            paper.focus();
+        });
+    });
+
+    function clearPaper() {
+        paper.innerHTML = '';
+    }
+
+    function animateKeyPress(key) {
+        const keyElement = keyboard.querySelector(`.key[data-key="${key.toLowerCase()}"]`) ||
+            Array.from(keys).find(k => k.textContent.toLowerCase() === key.toLowerCase());
+
+        if (keyElement) {
+            keyElement.classList.add('typing');
+            setTimeout(() => keyElement.classList.remove('typing'), 100);
+        }
+    }
+
+    function typeText(text) {
+        if (typingInProgress) return;
+        typingInProgress = true;
+        stopTyping = false;
+        startTypingBtn.textContent = 'STOP';
+        clearPaper();
+
+        const lines = text.split('\n');
+        let lineIndex = 0;
+        let charIndex = 0;
+
+        function typeLine() {
+            if (stopTyping) {
+                typingInProgress = false;
+                startTypingBtn.textContent = 'Start Typing';
+                return;
+            }
+            if (lineIndex >= lines.length) {
+                paper.innerHTML += '<span class="cursor">|</span>';
+                typingInProgress = false;
+                startTypingBtn.textContent = 'Start Typing';
+                return;
+            }
+
+            const line = lines[lineIndex];
+            if (charIndex < line.length) {
+                const char = line[charIndex];
+
+                animateKeyPress(char);
+
+                paper.innerHTML += char;
+                paper.scrollTop = paper.scrollHeight;
+
+                charIndex++;
+                setTimeout(typeLine, 100);
+            } else {
+                paper.innerHTML += '<br>'; 
+                paper.scrollTop = paper.scrollHeight;
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeLine, 300);
+            }
+        }
+        paper.innerHTML += '<span class="cursor">|</span>';
+        typeLine();
+    }
+
+    // MadLib button event listener
+    madlibBtn.addEventListener('click', () => {
+        const originalText = textInput.value;
+        const intensity = madlibIntensity.value;
+        
+        if (!originalText.trim()) {
+            alert('Please enter some text first');
+            return;
+        }
+
+        const madlibText = createMadlib(originalText, intensity);
+
+        // Clear current paper content
+        clearPaper();
+
+        // Insert the MadLib text into the paper
+        paper.innerHTML = madlibText;
+
+        // Update the text input with the MadLib text
+        textInput.value = madlibText;
+
+        // Adjust paper height based on content
+        paper.style.height = 'auto';
+    });
+
+    startTypingBtn.addEventListener('click', () => {
+        if (typingInProgress) {
+            stopTyping = true;
+            startTypingBtn.textContent = 'Start Typing';
+        } else {
+            const text = textInput.value;
+            if (text.trim()) {
+                paper.style.height = 'auto';
+                typeText(text);
+            }
+        }
+    });
+
+    clearPaperBtn.addEventListener('click', () => {
+        paper.innerHTML = '';
+        textInput.value = '';
+    });
+
+    platenKnobs.forEach(knob => {
+        knob.addEventListener('mousedown', function() {
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 100);
+        });
+    });
+
+    carriageReturn.addEventListener('mousedown', function() {
+        this.style.transform = 'skew(-20deg) translateY(3px)';
+        setTimeout(() => {
+            this.style.transform = 'skew(-20deg)';
+        }, 100);
+    });
+
+    downloadBtn.addEventListener('click', function() {
+        const text = paper.innerText;
+        const blob = new Blob([text], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'typewriter_document.txt';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    });
+
+    paper.addEventListener('click', () => {
+        paper.focus();
+    });
+
+    paper.addEventListener('keydown', (event) => {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            document.execCommand('insertText', false, '\t');
+        }
+    });
+})();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
+</body>
+</html>
