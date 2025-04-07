@@ -323,17 +323,19 @@
                 <option value="many">Many</option>
                 <option value="most">Most</option>
             </select>
-            <button class="transform-btn" id="madlib-btn">→Blanks</button>
+            <button class="transform-btn" id="madlib-btn">↓Blanks</button>
             <button class="transform-btn" id="wordswap-btn">ΔOrder</button>
             <button class="transform-btn" id="phoneme-swap-btn">ΔVowels</button>
             <button class="transform-btn" id="consonant-swap-btn">ΔConsonants</button>
+			<button class="transform-btn" id="lineSwap-btn">ΔLines</button>
         </div>
         <div class="controls-row">
-            <button class="transform-btn" id="syllable-inversion-btn">ΔSyllables</button>
+            <button class="transform-btn" id="syllable-inversion-btn">↔Syllables</button>
             <button class="transform-btn" id="caesura-inversion-btn">↔Caesura</button>
-            <button class="transform-btn" id="line-swap-btn">ΔLines</button>
-            <button class="transform-btn" id="freak-btn">Freak</button>
+            <button class="transform-btn" id="freak-btn">↓Freak</button>
             <button class="transform-btn" id="conjunction-swap-btn">ΔConjunctions</button>
+            <button class="transform-btn" id="spoonerism-btn">↓Spoonerisms</button>
+			<button class="transform-btn" id="numerologies-btn">ΔNumerologies</button>
         </div>
     </div>
     <div class="keyboard-container" id="keyboard">
@@ -382,7 +384,6 @@
 <button class="download-btn">Download Text File</button>
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function () {
     initTypewriter();
 });
@@ -409,16 +410,54 @@ function initTypewriter() {
     const stopTypingBtn = document.querySelector('.stop-typing-btn');
     const transformIntensity = document.getElementById('transform-intensity');
 
-    // Transformation buttons
-    const madlibBtn = document.getElementById('madlib-btn');
-    const wordswapBtn = document.getElementById('wordswap-btn');
-    const phonemeSwapBtn = document.getElementById('phoneme-swap-btn');
-    const consonantSwapBtn = document.getElementById('consonant-swap-btn');
-    const syllableInversionBtn = document.getElementById('syllable-inversion-btn');
-    const caesuraInversionBtn = document.getElementById('caesura-inversion-btn');
-    const lineSwapBtn = document.getElementById('line-swap-btn');
-    const prefixFreakBtn = document.getElementById('freak-btn');
-    const conjunctionSwapBtn = document.getElementById('conjunction-swap-btn');
+    // Get the text transform controls container
+    const textTransformsControls = document.querySelector('.text-transforms-controls');
+    // Transformation buttons - using both ID and class selectors for better reliability
+    let madlibBtn = document.getElementById('madlib-btn') || document.querySelector('.madlib-btn');
+    let wordswapBtn = document.getElementById('wordswap-btn') || document.querySelector('.wordswap-btn');
+    let phonemeSwapBtn = document.getElementById('phoneme-swap-btn') || document.querySelector('.phoneme-swap-btn');
+    let consonantSwapBtn = document.getElementById('consonant-swap-btn') || document.querySelector('.consonant-swap-btn');
+    let syllableInversionBtn = document.getElementById('syllable-inversion-btn') || document.querySelector('.syllable-inversion-btn');
+    let caesuraInversionBtn = document.getElementById('caesura-inversion-btn') || document.querySelector('.caesura-inversion-btn');
+    let lineSwapBtn = document.getElementById('lineSwap-btn') || document.querySelector('.lineSwap-btn');
+    let prefixFreakBtn = document.getElementById('freak-btn') || document.querySelector('.freak-btn');
+    let conjunctionSwapBtn = document.getElementById('conjunction-swap-btn') || document.querySelector('.conjunction-swap-btn');
+    let spoonerismBtn = document.getElementById('spoonerism-btn') || document.querySelector('.spoonerism-btn');
+    let numerologiesBtn = document.getElementById('numerologies-btn') || document.querySelector('.numerologies-btn');
+
+    //  ---NEW---  Function to handle button creation and event listener attachment
+    function setupTransformButton(button, transformFunction, transformName) {
+        if (!button && textTransformsControls) {
+            console.log(`Creating ${transformName} button...`);
+            const newButton = document.createElement('button');
+            newButton.textContent = transformName;
+            newButton.id = `${transformName.toLowerCase().replace(' ', '-')}-btn`;
+            newButton.classList.add('transform-btn');
+            textTransformsControls.appendChild(newButton);
+            button = newButton;  // Update the button variable
+        }
+
+        if (button) {
+            console.log(`${transformName} button exists:`, button);
+            button.addEventListener('click', () => processTextTransformation(transformFunction, transformName));
+        } else {
+            console.warn(`Could not find or create ${transformName} button`);
+        }
+        return button; // Return the button for consistency
+    }
+
+    // --- Create and/or attach listeners to all transform buttons ---
+    madlibBtn = setupTransformButton(madlibBtn, createMadlib, "Madlib");
+    wordswapBtn = setupTransformButton(wordswapBtn, shuffleLongWords, "Word Swap");
+    phonemeSwapBtn = setupTransformButton(phonemeSwapBtn, enhancedPhonemeSwap, "Phoneme Swap");
+    consonantSwapBtn = setupTransformButton(consonantSwapBtn, consonantSwap, "Consonant Swap");
+    syllableInversionBtn = setupTransformButton(syllableInversionBtn, invertSyllables, "Syllable Inversion");
+    caesuraInversionBtn = setupTransformButton(caesuraInversionBtn, invertAtCaesura, "Caesura Inversion");
+    lineSwapBtn = setupTransformButton(lineSwapBtn, reorderPoemLines, "Line Swap");
+    prefixFreakBtn = setupTransformButton(prefixFreakBtn, prefixFreak, "Prefix Freak");
+    conjunctionSwapBtn = setupTransformButton(conjunctionSwapBtn, simpleConjunctionSwap, "Conjunction Swap");
+    spoonerismBtn = setupTransformButton(spoonerismBtn, spoonerism, "Spoonerism");
+    numerologiesBtn = setupTransformButton(numerologiesBtn, numerologiesTransform, "Numerologies");
 
     // Log elements to verify they're found
     console.log("Element checks:", {
@@ -426,6 +465,7 @@ function initTypewriter() {
         keyboard: !!keyboard,
         textInput: !!textInput,
         startTypingBtn: !!startTypingBtn,
+        transformIntensity: !!transformIntensity,
         madlibBtn: !!madlibBtn,
         wordswapBtn: !!wordswapBtn,
         phonemeSwapBtn: !!phonemeSwapBtn,
@@ -434,7 +474,9 @@ function initTypewriter() {
         caesuraInversionBtn: !!caesuraInversionBtn,
         lineSwapBtn: !!lineSwapBtn,
         prefixFreakBtn: !!prefixFreakBtn,
-        conjunctionSwapBtn: !!conjunctionSwapBtn
+        conjunctionSwapBtn: !!conjunctionSwapBtn,
+        spoonerismBtn: !!spoonerismBtn,
+        numerologiesBtn: !!numerologiesBtn
     });
 
     // Stop initialization if critical elements are missing
@@ -461,13 +503,18 @@ function initTypewriter() {
         paper.style.justifyContent = "flex-end";
     }
 
-    // Function to determine how many items to transform based on intensity
+    // Unified implementation of getIntensityValue
     function getIntensityValue(totalItems, intensity) {
         const intensityMap = {
             'little': Math.max(1, Math.floor(totalItems * 0.05)),
             'some': Math.max(1, Math.floor(totalItems * 0.25)),
             'many': Math.max(1, Math.floor(totalItems * 0.5)),
-            'most': Math.max(1, Math.floor(totalItems * 0.75))
+            'most': Math.max(1, Math.floor(totalItems * 0.75)),
+            // Add support for other intensity names used elsewhere
+            'minimal': Math.max(1, Math.floor(totalItems * 0.1)),
+            'medium': Math.max(1, Math.floor(totalItems * 0.5)),
+            'high': Math.max(1, Math.floor(totalItems * 0.75)),
+            'max': totalItems
         };
         return intensityMap[intensity] || Math.max(1, Math.floor(totalItems * 0.25));
     }
@@ -505,27 +552,26 @@ function initTypewriter() {
     // Improved madlib with optimization
     function createMadlib(text, intensity, progressCallback, completeCallback) {
         console.log("Creating madlib with intensity:", intensity);
-        
         // Break down into a series of chunked operations
         const words = text.split(/\s+/);
         const madlibWords = [...words];
         const eligibleWords = words.filter(word => word.length >= 3);
         const wordsToReplace = getIntensityValue(eligibleWords.length, intensity);
         const usedIndexes = new Set();
-        
+
         // Chunk the work in batches
-        const chunkSize = 100; // Process 100 words at a time
+        const chunkSize = 100;
+        // Process 100 words at a time
         let replacedCount = 0;
         let currentIndex = 0;
-        
+
         function processNextChunk() {
             const startTime = performance.now();
-            
             // Process until chunk is complete or time limit exceeded
-            while (replacedCount < wordsToReplace && 
-                   currentIndex < words.length && 
-                   performance.now() - startTime < 50) { // 50ms time limit per chunk
-                   
+            while (replacedCount < wordsToReplace &&
+                currentIndex < words.length &&
+                performance.now() - startTime < 50) {
+
                 const randomIndex = Math.floor(Math.random() * words.length);
                 if (!usedIndexes.has(randomIndex) && words[randomIndex].length >= 3) {
                     madlibWords[randomIndex] = '[___]';
@@ -534,13 +580,13 @@ function initTypewriter() {
                 }
                 currentIndex++;
             }
-            
+
             // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, replacedCount / wordsToReplace);
                 progressCallback(progress);
             }
-            
+
             // Check if we're done
             if (replacedCount >= wordsToReplace || currentIndex >= words.length) {
                 completeCallback(madlibWords.join(' '));
@@ -549,7 +595,7 @@ function initTypewriter() {
                 setTimeout(processNextChunk, 0);
             }
         }
-        
+
         // Start the first chunk
         setTimeout(processNextChunk, 0);
     }
@@ -557,25 +603,21 @@ function initTypewriter() {
     // Word shuffling with chunking for performance
     function shuffleLongWords(text, intensity, progressCallback, completeCallback) {
         console.log("Shuffling words with intensity:", intensity);
-        
         const words = text.split(/\s+/);
         const longWordIndices = words.reduce((indices, word, index) => {
             if (word.length >= 5) indices.push(index);
             return indices;
         }, []);
-
         const swapsNeeded = getIntensityValue(Math.floor(longWordIndices.length / 2), intensity);
         const swappedIndices = new Set();
         let swapsPerformed = 0;
-        
         // Process in chunks to avoid UI freezing
         function processChunk() {
             const startTime = performance.now();
-            
-            while (swapsPerformed < swapsNeeded && 
-                   longWordIndices.length >= 2 &&
-                   performance.now() - startTime < 50) {
-                   
+            while (swapsPerformed < swapsNeeded &&
+                longWordIndices.length >= 2 &&
+                performance.now() - startTime < 50) {
+
                 const idx1 = Math.floor(Math.random() * longWordIndices.length);
                 let idx2 = Math.floor(Math.random() * longWordIndices.length);
 
@@ -593,13 +635,13 @@ function initTypewriter() {
                     swapsPerformed++;
                 }
             }
-            
+
             // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, swapsPerformed / swapsNeeded);
                 progressCallback(progress);
             }
-            
+
             // Check if we're done
             if (swapsPerformed >= swapsNeeded || longWordIndices.length < 2) {
                 completeCallback(words.join(' '));
@@ -608,7 +650,7 @@ function initTypewriter() {
                 setTimeout(processChunk, 0);
             }
         }
-        
+
         // Start processing
         setTimeout(processChunk, 0);
     }
@@ -616,7 +658,6 @@ function initTypewriter() {
     // Improved phoneme swap with chunking
     function enhancedPhonemeSwap(text, intensity, progressCallback, completeCallback) {
         console.log("Swapping phonemes with intensity:", intensity);
-        
         const vowels = 'aeiouAEIOU';
         const vowelMap = {
             'a': ['e', 'o'],
@@ -630,21 +671,19 @@ function initTypewriter() {
             'O': ['A', 'U'],
             'U': ['O', 'OO']
         };
-
         const words = text.split(/\s+/);
         const wordsToTransform = getIntensityValue(words.length, intensity);
         const transformedIndices = new Set();
         let transformCount = 0;
         let currentIndex = 0;
-        
+
         function processChunk() {
             const startTime = performance.now();
-            
             // Process this chunk
-            while (transformCount < wordsToTransform && 
-                   currentIndex < words.length &&
-                   performance.now() - startTime < 50) {
-                   
+            while (transformCount < wordsToTransform &&
+                currentIndex < words.length &&
+                performance.now() - startTime < 50) {
+
                 const randomIndex = Math.floor(Math.random() * words.length);
                 if (words[randomIndex].length < 4 || transformedIndices.has(randomIndex)) {
                     currentIndex++;
@@ -671,16 +710,16 @@ function initTypewriter() {
                     transformedIndices.add(randomIndex);
                     transformCount++;
                 }
-                
+
                 currentIndex++;
             }
-            
+
             // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, transformCount / wordsToTransform);
                 progressCallback(progress);
             }
-            
+
             // Check if we're done
             if (transformCount >= wordsToTransform || currentIndex >= words.length) {
                 completeCallback(words.join(' '));
@@ -689,7 +728,7 @@ function initTypewriter() {
                 setTimeout(processChunk, 0);
             }
         }
-        
+
         // Start processing
         setTimeout(processChunk, 0);
     }
@@ -697,45 +736,52 @@ function initTypewriter() {
     // Improved consonant swap with chunking
     function consonantSwap(text, intensity, progressCallback, completeCallback) {
         console.log("Swapping consonants with intensity:", intensity);
-        
         // Consonant pairs that won't lead to unreadable text
         const consonantPairs = {
-            'b': 'p', 'p': 'b',
-            'd': 't', 't': 'd',
-            'g': 'k', 'k': 'g',
-            'v': 'f', 'f': 'v',
-            'z': 's', 's': 'z',
-            'j': 'ch', 'c': 'k',
-            'B': 'P', 'P': 'B',
-            'D': 'T', 'T': 'D',
-            'G': 'K', 'K': 'G',
-            'V': 'F', 'F': 'V',
-            'Z': 'S', 'S': 'Z',
-            'J': 'Ch', 'C': 'K'
+            'b': 'p',
+            'p': 'b',
+            'd': 't',
+            't': 'd',
+            'g': 'k',
+            'k': 'g',
+            'v': 'f',
+            'f': 'v',
+            'z': 's',
+            's': 'z',
+            'j': 'ch',
+            'c': 'k',
+            'B': 'P',
+            'P': 'B',
+            'D': 'T',
+            'T': 'D',
+            'G': 'K',
+            'K': 'G',
+            'V': 'F',
+            'F': 'V',
+            'Z': 'S',
+            'S': 'Z',
+            'J': 'Ch',
+            'C': 'K'
         };
 
         const words = text.split(/\s+/);
         const intensityValue = parseFloat(intensity === 'little' ? 0.1 :
             intensity === 'some' ? 0.2 :
-                intensity === 'many' ? 0.4 :
-                    0.6);
-                    
+            intensity === 'many' ? 0.4 :
+            0.6);
         let processedCount = 0;
         const totalWords = words.length;
         const results = new Array(totalWords);
-        
         // Use chunk processing to avoid UI freezing
         function processChunk(startIdx, endIdx) {
             const start = performance.now();
-            
             for (let i = startIdx; i < endIdx && i < totalWords; i++) {
                 const word = words[i];
-                
                 if (word.length < 4 || Math.random() > intensityValue) {
                     results[i] = word;
                     continue;
                 }
-                
+
                 let result = '';
                 for (let j = 0; j < word.length; j++) {
                     const char = word[j];
@@ -747,29 +793,25 @@ function initTypewriter() {
                     }
                 }
                 results[i] = result;
-                
                 // Check if we've been processing too long
                 if (i % 10 === 0 && performance.now() - start > 50) {
                     processedCount = i + 1;
-                    
                     // Report progress
                     if (progressCallback) {
                         progressCallback(processedCount / totalWords);
                     }
-                    
+
                     // Schedule next chunk
                     setTimeout(() => processChunk(i + 1, endIdx), 0);
                     return;
                 }
             }
-            
-            processedCount = endIdx;
-            
-            // Report progress
+
+            processedCount = endIdx;// Report progress
             if (progressCallback) {
                 progressCallback(processedCount / totalWords);
             }
-            
+
             if (processedCount >= totalWords) {
                 completeCallback(results.join(' '));
             } else {
@@ -778,7 +820,7 @@ function initTypewriter() {
                 setTimeout(() => processChunk(processedCount, nextEnd), 0);
             }
         }
-        
+
         // Start processing in chunks of 200 words
         const firstChunkEnd = Math.min(200, totalWords);
         setTimeout(() => processChunk(0, firstChunkEnd), 0);
@@ -787,28 +829,24 @@ function initTypewriter() {
     // Improved syllable inversion with chunking
     function invertSyllables(text, intensity, progressCallback, completeCallback) {
         console.log("Inverting syllables with intensity:", intensity);
-        
         const words = text.split(/\s+/);
         const intensityValue = parseFloat(intensity === 'little' ? 0.1 :
             intensity === 'some' ? 0.25 :
-                intensity === 'many' ? 0.5 :
-                    0.75);
-                    
+            intensity === 'many' ? 0.5 :
+            0.75);
         const totalWords = words.length;
         const results = new Array(totalWords);
         let processedCount = 0;
-        
+
         function processChunk(startIdx, endIdx) {
             const start = performance.now();
-            
             for (let i = startIdx; i < endIdx && i < totalWords; i++) {
                 const word = words[i];
-                
                 if (word.length < 4 || Math.random() > intensityValue) {
                     results[i] = word;
                     continue;
                 }
-                
+
                 // Simple approximation - reverse the word or swap halves
                 if (Math.random() < 0.5) {
                     results[i] = word.split('').reverse().join('');
@@ -816,29 +854,27 @@ function initTypewriter() {
                     const mid = Math.floor(word.length / 2);
                     results[i] = word.substring(mid) + word.substring(0, mid);
                 }
-                
+
                 // Check if we've been processing too long
                 if (i % 20 === 0 && performance.now() - start > 50) {
                     processedCount = i + 1;
-                    
                     // Report progress
                     if (progressCallback) {
                         progressCallback(processedCount / totalWords);
                     }
-                    
+
                     // Schedule next chunk
                     setTimeout(() => processChunk(i + 1, endIdx), 0);
                     return;
                 }
             }
-            
+
             processedCount = endIdx;
-            
             // Report progress
             if (progressCallback) {
                 progressCallback(processedCount / totalWords);
             }
-            
+
             if (processedCount >= totalWords) {
                 completeCallback(results.join(' '));
             } else {
@@ -847,7 +883,7 @@ function initTypewriter() {
                 setTimeout(() => processChunk(processedCount, nextEnd), 0);
             }
         }
-        
+
         // Start processing in chunks
         const firstChunkEnd = Math.min(200, totalWords);
         setTimeout(() => processChunk(0, firstChunkEnd), 0);
@@ -856,7 +892,6 @@ function initTypewriter() {
     // Fixed caesura inversion with chunking
     function invertAtCaesura(text, intensity, progressCallback, completeCallback) {
         console.log("Inverting caesura with intensity:", intensity);
-        
         // FIX: Split by newlines and preserve them in the result
         const lines = text.split('\n');
         const linesToTransform = getIntensityValue(lines.length, intensity);
@@ -864,15 +899,14 @@ function initTypewriter() {
         let transformCount = 0;
         let currentLineIndex = 0;
         const transformedLines = [...lines];
-        
+
         function processChunk() {
             const startTime = performance.now();
-            
             // Process lines in chunks
-            while (transformCount < linesToTransform && 
-                   currentLineIndex < lines.length &&
-                   performance.now() - startTime < 50) {
-                
+            while (transformCount < linesToTransform &&
+                currentLineIndex < lines.length &&
+                performance.now() - startTime < 50) {
+
                 const randomIndex = Math.floor(Math.random() * lines.length);
                 if (transformedIndices.has(randomIndex) || lines[randomIndex].trim().length < 10) {
                     currentLineIndex++;
@@ -882,7 +916,6 @@ function initTypewriter() {
                 const line = lines[randomIndex];
                 // Find a natural division point
                 let caesuraIndex = Math.floor(line.length / 2);
-
                 // Check for punctuation first
                 const punctuationMatch = line.match(/[;—,.]\s/);
                 if (punctuationMatch) {
@@ -892,7 +925,6 @@ function initTypewriter() {
                     const middleIndex = Math.floor(line.length / 2);
                     const beforeMiddle = line.lastIndexOf(' ', middleIndex);
                     const afterMiddle = line.indexOf(' ', middleIndex);
-
                     if (beforeMiddle !== -1 && afterMiddle !== -1) {
                         caesuraIndex = (middleIndex - beforeMiddle < afterMiddle - middleIndex) ?
                             beforeMiddle : afterMiddle;
@@ -913,16 +945,16 @@ function initTypewriter() {
                     transformedIndices.add(randomIndex);
                     transformCount++;
                 }
-                
+
                 currentLineIndex++;
             }
-            
+
             // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, transformCount / linesToTransform);
                 progressCallback(progress);
             }
-            
+
             // Check if we're done
             if (transformCount >= linesToTransform || currentLineIndex >= lines.length) {
                 completeCallback(transformedLines.join('\n'));
@@ -931,162 +963,152 @@ function initTypewriter() {
                 setTimeout(processChunk, 0);
             }
         }
-        
+
         // Start processing
         setTimeout(processChunk, 0);
     }
 
     // Fixed line reordering with chunking
     function reorderPoemLines(text, intensity, progressCallback, completeCallback) {
-    console.log("Reordering poem lines with intensity:", intensity);
-    
-    // Split by newlines but preserve them
-    const lines = text.split('\n');
-    const nonEmptyLineIndices = [];
-    
-    // Find non-empty lines
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].trim() !== '') {
-            nonEmptyLineIndices.push(i);
-        }
-    }
-    
-    // Copy original lines
-    const transformedLines = [...lines];
-    
-    // Determine how many pairs of lines to swap based on intensity
-    const linesToReorder = Math.min(
-        getIntensityValue(Math.floor(nonEmptyLineIndices.length / 2), intensity),
-        Math.floor(nonEmptyLineIndices.length / 2)
-    );
-    
-    // Track which indices we've already used
-    const transformedIndices = new Set();
-    let transformCount = 0;
-    
-    function processChunk() {
-        const startTime = performance.now();
-        
-        // Process a chunk of swaps
-        while (transformCount < linesToReorder && 
-              nonEmptyLineIndices.length >= 2 &&
-              performance.now() - startTime < 50) {
-              
-            // Get available indices (ones we haven't used yet)
-            const availableIndices = nonEmptyLineIndices.filter(idx => !transformedIndices.has(idx));
-            
-            // If we don't have at least 2 available indices, break out
-            if (availableIndices.length < 2) break;
-            
-            // Pick two random indices from available lines
-            const randomIndex1 = Math.floor(Math.random() * availableIndices.length);
-            let randomIndex2 = Math.floor(Math.random() * availableIndices.length);
-            
-            // Make sure we pick different indices
-            while (randomIndex1 === randomIndex2) {
-                randomIndex2 = Math.floor(Math.random() * availableIndices.length);
+        console.log("Reordering poem lines with intensity:", intensity);
+        // Split by newlines but preserve them
+        const lines = text.split('\n');
+        const nonEmptyLineIndices = [];
+        // Find non-empty lines
+        for (let i = 0; i < lines.length; i++) {
+            if (lines[i].trim() !== '') {
+                nonEmptyLineIndices.push(i);
             }
-            
-            // Get the actual line indices from the original array
-            const lineIdx1 = availableIndices[randomIndex1];
-            const lineIdx2 = availableIndices[randomIndex2];
-            
-            // Swap lines
-            [transformedLines[lineIdx1], transformedLines[lineIdx2]] = 
-            [transformedLines[lineIdx2], transformedLines[lineIdx1]];
-            
-            // Mark these indices as used
-            transformedIndices.add(lineIdx1);
-            transformedIndices.add(lineIdx2);
-            transformCount++;
         }
-        
-        // Report progress
-        if (progressCallback) {
-            const progress = Math.min(1, transformCount / linesToReorder);
-            progressCallback(progress);
+
+        // Copy original lines
+        const transformedLines = [...lines];
+        // Determine how many pairs of lines to swap based on intensity
+        const linesToReorder = Math.min(
+            getIntensityValue(Math.floor(nonEmptyLineIndices.length / 2), intensity),
+            Math.floor(nonEmptyLineIndices.length / 2)
+        );
+        // Track which indices we've already used
+        const transformedIndices = new Set();
+        let transformCount = 0;
+
+        function processChunk() {
+            const startTime = performance.now();
+            // Process a chunk of swaps
+            while (transformCount < linesToReorder &&
+                nonEmptyLineIndices.length >= 2 &&
+                performance.now() - startTime < 50) {
+
+                // Get available indices (ones we haven't used yet)
+                const availableIndices = nonEmptyLineIndices.filter(idx => !transformedIndices.has(idx));
+
+                // If we don't have at least 2 available indices, break out
+                if (availableIndices.length < 2) break;
+                // Pick two random indices from available lines
+                const randomIndex1 = Math.floor(Math.random() * availableIndices.length);
+                let randomIndex2 = Math.floor(Math.random() * availableIndices.length);
+
+                // Make sure we pick different indices
+                while (randomIndex1 === randomIndex2) {
+                    randomIndex2 = Math.floor(Math.random() * availableIndices.length);
+                }
+
+                // Get the actual line indices from the original array
+                const lineIdx1 = availableIndices[randomIndex1];
+                const lineIdx2 = availableIndices[randomIndex2];
+
+                // Swap lines
+                [transformedLines[lineIdx1], transformedLines[lineIdx2]] = 
+                [transformedLines[lineIdx2], transformedLines[lineIdx1]];
+                // Mark these indices as used
+                transformedIndices.add(lineIdx1);
+                transformedIndices.add(lineIdx2);
+                transformCount++;
+            }
+
+            // Report progress
+            if (progressCallback) {
+                const progress = Math.min(1, transformCount / linesToReorder);
+                progressCallback(progress);
+            }
+
+            // Check if we're done
+            if (transformCount >= linesToReorder || nonEmptyLineIndices.length < 2) {
+                completeCallback(transformedLines.join('\n'));
+            } else {
+                // Schedule the next chunk
+                setTimeout(processChunk, 0);
+            }
         }
-        
-        // Check if we're done
-        if (transformCount >= linesToReorder || nonEmptyLineIndices.length < 2) {
-            completeCallback(transformedLines.join('\n'));
-        } else {
-            // Schedule the next chunk
-            setTimeout(processChunk, 0);
-        }
+
+        // Start processing
+        setTimeout(processChunk, 0);
     }
-    
-    // Start processing
-    setTimeout(processChunk, 0);
-}
+
     // Improved prefix freak with chunking
     function prefixFreak(text, intensity, progressCallback, completeCallback) {
         console.log("Prefix Freaking with intensity:", intensity);
-        
         const prefixes = [
             "un", "in", "im", "il", "ir", "dis", "mono", "bi", "tri", "quad", "quart",
             "poly", "pre", "post", "re", "inter", "sub", "super", "sur", "hyper", "micro",
             "semi", "anti", "auto", "co", "ex", "mis", "non", "over", "pro", "trans",
             "under", "uni"
         ];
-        
         const words = text.split(/\s+/);
         const freakAmount = getIntensityValue(words.length, intensity);
         let freakCount = 0;
         let processedWords = 0;
         const freaked = [...words];
         const usedIndexes = new Set();
-        
+
         function processChunk() {
             const startTime = performance.now();
-            
-            while (freakCount < freakAmount && 
-                   processedWords < words.length &&
-                   performance.now() - startTime < 50) {
-                   
+            while (freakCount < freakAmount &&
+                processedWords < words.length &&
+                performance.now() - startTime < 50) {
+
                 const randomIndex = Math.floor(Math.random() * words.length);
                 if (usedIndexes.has(randomIndex) || words[randomIndex].length < 4) {
                     processedWords++;
                     continue;
                 }
-                
+
                 const word = words[randomIndex].toLowerCase();
                 let matched = false;
-                
+
                 // Try each prefix
                 for (let i = 0; i < prefixes.length; i++) {
                     const prefix = prefixes[i];
                     if (word.startsWith(prefix) && word.length > prefix.length + 2) {
                         // Split the word and insert "freaking"
-                        freaked[randomIndex] = word.substring(0, prefix.length) + 
-                                              "-freaking-" + 
-                                              word.substring(prefix.length);
-                        
+                        freaked[randomIndex] = word.substring(0, prefix.length) +
+                            "-freaking-" +
+                            word.substring(prefix.length);
                         // Restore original case
                         if (words[randomIndex] !== word) {
                             // If first letter was uppercase, capitalize the result
                             if (words[randomIndex][0] === words[randomIndex][0].toUpperCase()) {
-                                freaked[randomIndex] = freaked[randomIndex][0].toUpperCase() + 
-                                                      freaked[randomIndex].substring(1);
+                                freaked[randomIndex] = freaked[randomIndex][0].toUpperCase() +
+                                    freaked[randomIndex].substring(1);
                             }
                         }
-                        
+
                         freakCount++;
                         usedIndexes.add(randomIndex);
                         matched = true;
                         break;
                     }
                 }
-                
+
                 processedWords++;
             }
-            
+
             // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, freakCount / freakAmount);
                 progressCallback(progress);
             }
-            
+
             // Check if we're done
             if (freakCount >= freakAmount || processedWords >= words.length) {
                 completeCallback(freaked.join(' '));
@@ -1095,7 +1117,7 @@ function initTypewriter() {
                 setTimeout(processChunk, 0);
             }
         }
-        
+
         // Start processing
         setTimeout(processChunk, 0);
     }
@@ -1103,10 +1125,9 @@ function initTypewriter() {
     // Simple lists for the two main conjunction categories
     const coordinatingConjunctions = new Set(["and", "but", "or", "nor", "for", "yet", "so"]);
     const subordinatingConjunctions = new Set([
-        "although", "because", "if", "since", "though", "unless", "until", 
+        "although", "because", "if", "since", "though", "unless", "until",
         "when", "where", "while", "after", "before", "as", "whereas", "whether"
     ]);
-
     // Helper function to shuffle array
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -1118,339 +1139,456 @@ function initTypewriter() {
 
     // Fixed conjunction swap with chunking
     function simpleConjunctionSwap(text, intensity, progressCallback, completeCallback) {
-        console.log("Swapping conjunctions with intensity:", intensity);
+    console.log("Swapping conjunctions with intensity:", intensity);
+    // Convert to arrays for random selection
+    const coordArray = Array.from(coordinatingConjunctions);
+    const suborArray = Array.from(subordinatingConjunctions);
+    
+    // Shuffle both arrays to get random replacements
+    const shuffledCoord = shuffleArray([...coordArray]);
+    const shuffledSubor = shuffleArray([...suborArray]);
+    
+    // Create maps for replacements
+    const coordMap = {};
+    const suborMap = {};
+    
+    // Populate maps with random replacements
+    coordArray.forEach((conj, i) => {
+        coordMap[conj] = shuffledCoord[i];
+    });
+    
+    suborArray.forEach((conj, i) => {
+        suborMap[conj] = shuffledSubor[i];
+    });
+    
+    // Split text into words
+    const words = text.split(/\s+/);
+    const totalWords = words.length;
+    let processedCount = 0;
+    let swapCount = 0;
+    
+    // Calculate number of conjunctions to replace based on intensity
+    const conjunctionsToReplace = getIntensityValue(
+        totalWords * 0.1, // Estimate: conjunctions are ~10% of text
+        intensity
+    );
+    
+    // Create an array for the result
+    const result = [...words];
+    
+    function processChunk(startIdx, endIdx) {
+        const start = performance.now();
         
-        // Convert to arrays for random selection
-        const coordArray = Array.from(coordinatingConjunctions);
-        const subordArray = Array.from(subordinatingConjunctions);
-        
-        const words = text.split(/\s+/);
-        const result = [...words]; // Make a copy for the result
-        
-        // Find all conjunction indices first, then apply intensity to that subset
-        const conjunctionIndices = [];
-        for (let i = 0; i < words.length; i++) {
-            // Strip punctuation for checking but keep it for later
-            const cleanWord = words[i].toLowerCase().replace(/[.,;!?]+$/, '');
-            if (coordinatingConjunctions.has(cleanWord) || subordinatingConjunctions.has(cleanWord)) {
-                conjunctionIndices.push(i);
+        for (let i = startIdx; i < endIdx && i < totalWords; i++) {
+            const word = words[i].toLowerCase().replace(/[.,;!?]$/, '');
+            
+            if (coordinatingConjunctions.has(word)) {
+                result[i] = preserveCase(words[i], coordMap[word]);
+                swapCount++;
+            } else if (subordinatingConjunctions.has(word)) {
+                result[i] = preserveCase(words[i], suborMap[word]);
+                swapCount++;
+            }
+            
+            // Check if we've been processing too long
+            if (i % 20 === 0 && performance.now() - start > 50) {
+                processedCount = i + 1;
+                
+                // Report progress
+                if (progressCallback) {
+                    progressCallback(Math.min(1, swapCount / conjunctionsToReplace));
+                }
+                
+                // Schedule next chunk
+                setTimeout(() => processChunk(processedCount, endIdx), 0);
+                return;
             }
         }
         
-        // Shuffle the array of indices to ensure randomness across the text
-        shuffleArray(conjunctionIndices);
+        processedCount = endIdx;
         
-        // Determine how many conjunctions to replace based on intensity
-        const intensityValue = intensity === 'little' ? 0.25 :
-                               intensity === 'some' ? 0.5 :
-                               intensity === 'many' ? 0.75 : 0.9;
+        // Report progress
+        if (progressCallback) {
+            progressCallback(Math.min(1, swapCount / conjunctionsToReplace));
+        }
         
-        const wordsToChange = Math.max(1, Math.floor(conjunctionIndices.length * intensityValue));
+        if (processedCount >= totalWords || swapCount >= conjunctionsToReplace) {
+            completeCallback(result.join(' '));
+        } else {
+            // Process next chunk
+            const nextEnd = Math.min(processedCount + 200, totalWords);
+            setTimeout(() => processChunk(processedCount, nextEnd), 0);
+        }
+    }
+    
+    // Start processing in chunks
+    const firstChunkEnd = Math.min(200, totalWords);
+    setTimeout(() => processChunk(0, firstChunkEnd), 0);
+}
+
+// Spoonerism function with chunking
+function spoonerism(text, intensity, progressCallback, completeCallback) {
+    console.log("Creating spoonerisms with intensity:", intensity);
+    
+    // Split into sentences
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const sentencesToModify = getIntensityValue(sentences.length, intensity);
+    let modifiedCount = 0;
+    let processedCount = 0;
+    const results = [];
+    
+    function processChunk() {
+        const startTime = performance.now();
         
-        // Limit to available conjunctions
-        const indexesToProcess = conjunctionIndices.slice(0, wordsToChange);
+        while (modifiedCount < sentencesToModify && 
+               processedCount < sentences.length &&
+               performance.now() - startTime < 50) {
+            
+            const sentence = sentences[processedCount];
+            const words = sentence.trim().split(/\s+/);
+            
+            if (words.length >= 2) {
+                // Find two consecutive words that both start with consonants
+                for (let i = 0; i < words.length - 1; i++) {
+                    if (modifiedCount >= sentencesToModify) break;
+                    
+                    const word1 = words[i];
+                    const word2 = words[i + 1];
+                    
+                    // Skip short words
+                    if (word1.length < 2 || word2.length < 2) continue;
+                    
+                    // Find first consonant clusters
+                    const consonantMatch1 = word1.match(/^([^aeiou]+)/i);
+                    const consonantMatch2 = word2.match(/^([^aeiou]+)/i);
+                    
+                    if (consonantMatch1 && consonantMatch2) {
+                        const consonant1 = consonantMatch1[0];
+                        const consonant2 = consonantMatch2[0];
+                        
+                        // Swap the consonant clusters
+                        words[i] = consonant2 + word1.substring(consonant1.length);
+                        words[i + 1] = consonant1 + word2.substring(consonant2.length);
+                        
+                        modifiedCount++;
+                        break;
+                    }
+                }
+            }
+            
+            results.push(words.join(' '));
+            processedCount++;
+        }
         
-        let changeCount = 0;
-        let processedCount = 0;
+        // Report progress
+        if (progressCallback) {
+            const progress = Math.min(1, modifiedCount / sentencesToModify);
+            progressCallback(progress);
+        }
         
+        // Check if we're done
+        if (modifiedCount >= sentencesToModify || processedCount >= sentences.length) {
+            // Add appropriate punctuation back
+            const finalResult = results.join('. ') + '.';
+            completeCallback(finalResult);
+        } else {
+            // Schedule the next chunk
+            setTimeout(processChunk, 0);
+        }
+    }
+    
+    // Start processing
+    setTimeout(processChunk, 0);
+}
+
+
+    // Numerologies function with chunking
+    function numerologiesTransform(text, intensity, progressCallback, completeCallback) {
+        console.log("Applying numerologies with intensity:", intensity);
+        const words = text.split(/\s+/);
+        const transformedWords = [...words];
+        const wordsToTransform = getIntensityValue(words.length, intensity);
+        const transformedIndices = new Set();
+        let transformCount = 0;
+        let currentIndex = 0;
+
         function processChunk() {
             const startTime = performance.now();
-            
-            // Process a chunk
-            while (processedCount < indexesToProcess.length &&
-                   performance.now() - startTime < 50) {
-                   
-                const currentIndex = indexesToProcess[processedCount];
-                // Extract the original word and any trailing punctuation
-                const originalWord = words[currentIndex];
-                const punctMatch = originalWord.match(/([.,;!?]+)$/);
-                const punctuation = punctMatch ? punctMatch[1] : '';
-                const cleanWord = originalWord.toLowerCase().replace(/[.,;!?]+$/, '');
-                
-                // Determine which set the word belongs to
-                let replacement = '';
-                
-                if (coordinatingConjunctions.has(cleanWord)) {
-                    // Get other coordinating conjunctions
-                    const options = coordArray.filter(conj => conj !== cleanWord);
-                    replacement = options[Math.floor(Math.random() * options.length)];
-                } else if (subordinatingConjunctions.has(cleanWord)) {
-                    // Get other subordinating conjunctions
-                    const options = subordArray.filter(conj => conj !== cleanWord);
-                    replacement = options[Math.floor(Math.random() * options.length)];
+            while (transformCount < wordsToTransform &&
+                currentIndex < words.length &&
+                performance.now() - startTime < 50) {
+
+                const randomIndex = Math.floor(Math.random() * words.length);
+                if (transformedIndices.has(randomIndex) || words[randomIndex].length < 3) {
+                    currentIndex++;
+                    continue;
                 }
-                
-                if (replacement) {
-                    // Preserve case
-                    if (originalWord[0] === originalWord[0].toUpperCase()) {
-                        replacement = replacement[0].toUpperCase() + replacement.slice(1);
+
+                const word = words[randomIndex];
+                let transformed = '';
+                for (let i = 0; i < word.length; i++) {
+                    const charCode = word.charCodeAt(i);
+                    // Basic numerology: A=1, B=2, etc.
+                    if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
+                        const base = charCode >= 97 ? 97 : 65;
+                        transformed += (charCode - base + 1) + ' ';
+                    } else {
+                        transformed += word[i];
                     }
-                    
-                    // Add back any punctuation
-                    result[currentIndex] = replacement + punctuation;
-                    changeCount++;
                 }
-                
-                processedCount++;
+
+                transformedWords[randomIndex] = transformed.trim();
+                transformedIndices.add(randomIndex);
+                transformCount++;
+                currentIndex++;
             }
-            
+
             // Report progress
             if (progressCallback) {
-                const progress = Math.min(1, processedCount / indexesToProcess.length);
+                const progress = Math.min(1, transformCount / wordsToTransform);
                 progressCallback(progress);
             }
-            
+
             // Check if we're done
-            if (processedCount >= indexesToProcess.length) {
-                completeCallback(result.join(' '));
+            if (transformCount >= wordsToTransform || currentIndex >= words.length) {
+                completeCallback(transformedWords.join(' '));
             } else {
                 // Schedule the next chunk
                 setTimeout(processChunk, 0);
             }
         }
-        
+
         // Start processing
         setTimeout(processChunk, 0);
     }
 
-    // Main typing function
-    async function typeText(text) {
-        if (!paper) return;
+    // Centralized text processing function
+    function processTextTransformation(transformFunction, transformName) {
+    if (typingInProgress) {
+        console.warn("Cannot transform text while typing is in progress");
+        return;
+    }
+    
+    const intensity = transformIntensity ? transformIntensity.value : 'some';
+    const inputText = textInput.value;
+    
+    if (!inputText.trim()) {
+        console.warn("No text to transform");
+        return;
+    }
+    
+    console.log(`Starting ${transformName} transformation with intensity: ${intensity}`);
+    setProcessingStatus(true);
+    
+    if (processingTask) {
+        clearTimeout(processingTask);
+    }
+    
+    processingTask = setTimeout(() => {
+        transformFunction(
+            inputText,
+            intensity,
+            (progress) => {
+                console.log(`${transformName} progress: ${Math.round(progress * 100)}%`);
+            },
+            (transformedText) => {
+                updateText(transformedText);
+                setProcessingStatus(false);
+                console.log(`${transformName} transformation complete`);
+            }
+        );
+    }, 10);
+}
+
+// Helper function to animate key press
+function animateKeyPress(key) {
+    if (!key) return;
+    
+    key.classList.add('pressed');
+    setTimeout(() => {
+        key.classList.remove('pressed');
+    }, 100);
+}
+
+// Helper function to simulate typing
+function simulateTyping(text, index, onComplete) {
+    if (stopTyping) {
+        stopTyping = false;
+        typingInProgress = false;
+        if (onComplete) onComplete();
+        return;
+    }
+    
+    if (index < text.length) {
+        const char = text.charAt(index);
         
-        const chars = text.split('');
-        let index = 0;
-        const typingSpeed = 50; // ms between characters
+        // Skip non-printable characters
+        if (char.charCodeAt(0) < 32) {
+            setTimeout(() => simulateTyping(text, index + 1, onComplete), 10);
+            return;
+        }
         
-        return new Promise((resolve) => {
-            function typeNextChar() {
-                if (stopTyping) {
-                    resolve();
-                    return;
-                }
-                
-                if (index < chars.length) {
-                    const char = chars[index++];
-                    
-                    // Animate the corresponding key
-                    if (keyboard) {
-                        let keyToAnimate;
-                        
-                        if (char === ' ') {
-                            keyToAnimate = keyboard.querySelector('.key[data-char=" "]');
-                        } else if (char === '\n') {
-                            if (carriageReturn) {
-                                carriageReturn.classList.add('active');
-                                setTimeout(() => {
-                                    carriageReturn.classList.remove('active');
-                                }, 100);
-                            }
-                        } else {
-                            keyToAnimate = keyboard.querySelector(`.key[data-char="${char.toLowerCase()}"]`);
-                        }
-                        
-                        if (keyToAnimate) {
-                            keyToAnimate.classList.add('active');
-                            setTimeout(() => {
-                                keyToAnimate.classList.remove('active');
-                            }, 100);
-                        }
-                    }
-                    
-                    // Append to paper content
-                    if (char === '\n') {
-                        paperContent += '<br>';
-                    } else {
-                        paperContent += char;
-                    }
-                    
-                    // Update paper
-                    paper.innerHTML = paperContent;
-                    paper.scrollTop = paper.scrollHeight;
-                    
-                    // Schedule next character
-                    setTimeout(typeNextChar, typingSpeed);
-                } else {
-                    resolve();
+        // Type the character
+        paperContent += char;
+        if (paper) {
+            // Create a new span for the character
+            const charSpan = document.createElement('span');
+            charSpan.textContent = char;
+            charSpan.className = 'typed-char';
+            paper.appendChild(charSpan);
+            
+            // Scroll to bottom to see new content
+            paper.scrollTop = paper.scrollHeight;
+        }
+        
+        // Find and animate the key if possible
+        if (keys && keys.length > 0) {
+            let keyToPress = null;
+            // Try to find the key by data-key attribute
+            for (const key of keys) {
+                if (key.getAttribute('data-key') === char.toLowerCase()) {
+                    keyToPress = key;
+                    break;
                 }
             }
             
-            typeNextChar();
-        });
-    }
-
-    // Function to simulate platen knob rotation
-    function rotatePlatenKnobs() {
-        if (!platenKnobs.length) return;
-        
-        platenKnobs.forEach(knob => {
-            knob.style.transition = 'transform 0.3s';
-            knob.style.transform = 'rotate(20deg)';
+            // If not found, try to find by text content
+            if (!keyToPress) {
+                for (const key of keys) {
+                    if (key.textContent.toLowerCase() === char.toLowerCase()) {
+                        keyToPress = key;
+                        break;
+                    }
+                }
+            }
             
-            setTimeout(() => {
-                knob.style.transform = 'rotate(0deg)';
-            }, 300);
-        });
-    }
-
-    // Main function to handle typing start
-    function startTyping() {
-        if (typingInProgress || !textInput || !paper) return;
+            // Animate the key press
+            if (keyToPress) {
+                animateKeyPress(keyToPress);
+            } else if (char === ' ') {
+                // Animate space bar if character is space
+                const spaceBar = document.querySelector('.space-bar');
+                if (spaceBar) animateKeyPress(spaceBar);
+            }
+        }
         
-        const text = textInput.value.trim();
-        if (!text) {
-            displayError("Please enter some text first!");
+        // Type the next character after a delay
+        const typingSpeed = Math.random() * 100 + 50; // Random delay between 50-150ms
+        setTimeout(() => simulateTyping(text, index + 1, onComplete), typingSpeed);
+    } else {
+        // Typing complete
+        typingInProgress = false;
+        if (onComplete) onComplete();
+    }
+}
+
+// Event listeners for buttons
+if (startTypingBtn) {
+    startTypingBtn.addEventListener('click', function() {
+        if (typingInProgress) {
+            console.warn("Typing already in progress");
+            return;
+        }
+        
+        const text = textInput.value;
+        if (!text.trim()) {
+            displayError("Please enter text to type!");
             return;
         }
         
         typingInProgress = true;
-        stopTyping = false;
-        
-        // Disable buttons during typing
-        if (startTypingBtn) startTypingBtn.disabled = true;
-        if (stopTypingBtn) stopTypingBtn.disabled = false;
-        
-        // Start typing animation
-        typeText(text).then(() => {
-            typingInProgress = false;
-            if (startTypingBtn) startTypingBtn.disabled = false;
-            if (stopTypingBtn) stopTypingBtn.disabled = true;
+        simulateTyping(text, 0, () => {
+            console.log("Typing complete");
         });
-    }
+    });
+}
 
-    // Function to stop typing
-    function stopTypingText() {
-        stopTyping = true;
-        if (stopTypingBtn) stopTypingBtn.disabled = true;
-        if (startTypingBtn) startTypingBtn.disabled = false;
-    }
+if (stopTypingBtn) {
+    stopTypingBtn.addEventListener('click', function() {
+        if (typingInProgress) {
+            stopTyping = true;
+            console.log("Typing stopped");
+        }
+    });
+}
 
-    // Clear paper content
-    function clearPaper() {
+if (clearPaperBtn) {
+    clearPaperBtn.addEventListener('click', function() {
+        if (typingInProgress) {
+            displayError("Cannot clear paper while typing is in progress");
+            return;
+        }
+        
+        paperContent = '';
         if (paper) {
-            paperContent = '';
-            paper.innerHTML = paperContent;
+            paper.innerHTML = '';
         }
-    }
+        console.log("Paper cleared");
+    });
+}
 
-    // Helper function to create a shared worker structure for all text transformations
-    function transformText(transformFunction) {
-        if (processingTask) {
-            displayError("A transformation is already in progress. Please wait.");
+if (downloadBtn) {
+    downloadBtn.addEventListener('click', function() {
+        if (!paperContent.trim()) {
+            displayError("No content to download");
             return;
         }
         
-        if (!textInput) {
-            console.error("Text input not found");
-            return;
-        }
-        
-        const text = textInput.value.trim();
-        if (!text) {
-            displayError("Please enter some text first!");
-            return;
-        }
-        
-        const intensity = transformIntensity ? transformIntensity.value : 'some';
-        setProcessingStatus(true);
-        
-        // Store the current transformation for potential cancellation
-        processingTask = { cancelled: false };
-        const currentTask = processingTask;
-        
-        // Start the transformation in a chunked way
-        transformFunction(text, intensity, 
-            (progress) => {
-                // Progress callback - update UI if needed
-                if (currentTask.cancelled) {
-                    setProcessingStatus(false);
-                    return;
-                }
-            },
-            (result) => {
-                // Complete callback
-                if (!currentTask.cancelled) {
-                    updateText(result);
-                    setProcessingStatus(false);
-                    processingTask = null;
-                    rotatePlatenKnobs();
-                }
-            }
-        );
-    }
-
-    // Download text as TXT file
-    function downloadText() {
-        const text = paper.innerText || '';
-        if (!text) {
-            displayError("No text to download!");
-            return;
-        }
-        
-        const blob = new Blob([text], { type: 'text/plain' });
+        // Create a blob and download it
+        const blob = new Blob([paperContent], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'typewriter-text.txt';
+        a.download = 'typewriter-output.txt';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    }
+        
+        console.log("Content downloaded");
+    });
+}
 
-    // Event listeners
-    if (startTypingBtn) {
-        startTypingBtn.addEventListener('click', startTyping);
-    }
-    
-    if (stopTypingBtn) {
-        stopTypingBtn.addEventListener('click', stopTypingText);
-    }
-    
-    if (clearPaperBtn) {
-        clearPaperBtn.addEventListener('click', clearPaper);
-    }
-    
-    if (downloadBtn) {
-        downloadBtn.addEventListener('click', downloadText);
-    }
-    
-    // Text transformation buttons
-    if (madlibBtn) {
-        madlibBtn.addEventListener('click', () => transformText(createMadlib));
-    }
-    
-    if (wordswapBtn) {
-        wordswapBtn.addEventListener('click', () => transformText(shuffleLongWords));
-    }
-    
-    if (phonemeSwapBtn) {
-        phonemeSwapBtn.addEventListener('click', () => transformText(enhancedPhonemeSwap));
-    }
-    
-    if (consonantSwapBtn) {
-        consonantSwapBtn.addEventListener('click', () => transformText(consonantSwap));
-    }
-    
-    if (syllableInversionBtn) {
-        syllableInversionBtn.addEventListener('click', () => transformText(invertSyllables));
-    }
-    
-    if (caesuraInversionBtn) {
-        caesuraInversionBtn.addEventListener('click', () => transformText(invertAtCaesura));
-    }
-    
-    if (lineSwapBtn) {
-        lineSwapBtn.addEventListener('click', () => transformText(reorderPoemLines));
-    }
-    
-    if (prefixFreakBtn) {
-        prefixFreakBtn.addEventListener('click', () => transformText(prefixFreak));
-    }
-    
-    if (conjunctionSwapBtn) {
-        conjunctionSwapBtn.addEventListener('click', () => transformText(simpleConjunctionSwap));
-    }
+// Animate carriage return if available
+if (carriageReturn) {
+    carriageReturn.addEventListener('click', function() {
+        if (typingInProgress) return;
+        
+        carriageReturn.classList.add('pressed');
+        setTimeout(() => {
+            carriageReturn.classList.remove('pressed');
+            
+            // Add a new line to the paper
+            paperContent += '\n';
+            if (paper) {
+                paper.appendChild(document.createElement('br'));
+                paper.scrollTop = paper.scrollHeight;
+            }
+        }, 100);
+    });
+}
 
-    console.log("Typewriter initialized successfully");
+// Animate platen knobs if available
+if (platenKnobs.length > 0) {
+    platenKnobs.forEach(knob => {
+        knob.addEventListener('click', function() {
+            if (typingInProgress) return;
+            
+            knob.classList.add('rotating');
+            setTimeout(() => {
+                knob.classList.remove('rotating');
+                
+                // Add a new line to the paper
+                paperContent += '\n';
+                if (paper) {
+                    paper.appendChild(document.createElement('br'));
+                    paper.scrollTop = paper.scrollHeight;
+                }
+            }, 500);
+        });
+    });
+}
+
+console.log("Typewriter initialization complete");
 }
 </script>
