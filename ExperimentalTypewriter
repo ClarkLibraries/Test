@@ -62,15 +62,6 @@
     height: 300px;
 }
 
-.paper-margin {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 40px;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-}
 
 #paper {
     height: 100%;
@@ -237,6 +228,15 @@
     border-right: 2px solid #2c3e50;
 }
 
+#paper > span {
+    display: block; /* Or width: 100%; */
+}
+
+/* If you are using the 'typed-char' class: */
+#paper > .typed-char {
+    display: block; /* Or width: 100%; */
+}
+
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
@@ -303,7 +303,6 @@
             </div>
         </div>
         <div class="paper-area">
-            <div class="paper-margin"></div>
             <div id="paper" aria-label="Type your document"></div>
             <div class="carriage-return"></div>
         </div>
@@ -383,6 +382,7 @@
 </div>
 <button class="download-btn">Download Text File</button>
 
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     initTypewriter();
@@ -395,7 +395,6 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 
 function initTypewriter() {
     console.log("Initializing typewriter...");
-
     // Select all the necessary elements
     const widget = document.querySelector('.hermes-3000-widget');
     const paper = document.getElementById('paper');
@@ -409,82 +408,72 @@ function initTypewriter() {
     const clearPaperBtn = document.querySelector('.clear-paper-btn');
     const stopTypingBtn = document.querySelector('.stop-typing-btn');
     const transformIntensity = document.getElementById('transform-intensity');
-
     // Get the text transform controls container
     const textTransformsControls = document.querySelector('.text-transforms-controls');
-    // Transformation buttons - using both ID and class selectors for better reliability
-    let madlibBtn = document.getElementById('madlib-btn') || document.querySelector('.madlib-btn');
-    let wordswapBtn = document.getElementById('wordswap-btn') || document.querySelector('.wordswap-btn');
-    let phonemeSwapBtn = document.getElementById('phoneme-swap-btn') || document.querySelector('.phoneme-swap-btn');
-    let consonantSwapBtn = document.getElementById('consonant-swap-btn') || document.querySelector('.consonant-swap-btn');
-    let syllableInversionBtn = document.getElementById('syllable-inversion-btn') || document.querySelector('.syllable-inversion-btn');
-    let caesuraInversionBtn = document.getElementById('caesura-inversion-btn') || document.querySelector('.caesura-inversion-btn');
-    let lineSwapBtn = document.getElementById('lineSwap-btn') || document.querySelector('.lineSwap-btn');
-    let prefixFreakBtn = document.getElementById('freak-btn') || document.querySelector('.freak-btn');
-    let conjunctionSwapBtn = document.getElementById('conjunction-swap-btn') || document.querySelector('.conjunction-swap-btn');
-    let spoonerismBtn = document.getElementById('spoonerism-btn') || document.querySelector('.spoonerism-btn');
-    let numerologiesBtn = document.getElementById('numerologies-btn') || document.querySelector('.numerologies-btn');
-
-    //  ---NEW---  Function to handle button creation and event listener attachment
-    function setupTransformButton(button, transformFunction, transformName) {
-        if (!button && textTransformsControls) {
-            console.log(`Creating ${transformName} button...`);
-            const newButton = document.createElement('button');
-            newButton.textContent = transformName;
-            newButton.id = `${transformName.toLowerCase().replace(' ', '-')}-btn`;
-            newButton.classList.add('transform-btn');
-            textTransformsControls.appendChild(newButton);
-            button = newButton;  // Update the button variable
-        }
-
-        if (button) {
-            console.log(`${transformName} button exists:`, button);
-            button.addEventListener('click', () => processTextTransformation(transformFunction, transformName));
-        } else {
-            console.warn(`Could not find or create ${transformName} button`);
-        }
-        return button; // Return the button for consistency
-    }
-
-    // --- Create and/or attach listeners to all transform buttons ---
-    madlibBtn = setupTransformButton(madlibBtn, createMadlib, "Madlib");
-    wordswapBtn = setupTransformButton(wordswapBtn, shuffleLongWords, "Word Swap");
-    phonemeSwapBtn = setupTransformButton(phonemeSwapBtn, enhancedPhonemeSwap, "Phoneme Swap");
-    consonantSwapBtn = setupTransformButton(consonantSwapBtn, consonantSwap, "Consonant Swap");
-    syllableInversionBtn = setupTransformButton(syllableInversionBtn, invertSyllables, "Syllable Inversion");
-    caesuraInversionBtn = setupTransformButton(caesuraInversionBtn, invertAtCaesura, "Caesura Inversion");
-    lineSwapBtn = setupTransformButton(lineSwapBtn, reorderPoemLines, "Line Swap");
-    prefixFreakBtn = setupTransformButton(prefixFreakBtn, prefixFreak, "Prefix Freak");
-    conjunctionSwapBtn = setupTransformButton(conjunctionSwapBtn, simpleConjunctionSwap, "Conjunction Swap");
-    spoonerismBtn = setupTransformButton(spoonerismBtn, spoonerism, "Spoonerism");
-    numerologiesBtn = setupTransformButton(numerologiesBtn, numerologiesTransform, "Numerologies");
-
-    // Log elements to verify they're found
+    // Log elements to verify they're found (DEBUGGING)
     console.log("Element checks:", {
+        widget: !!widget,
         paper: !!paper,
         keyboard: !!keyboard,
+        keys: keys.length,
         textInput: !!textInput,
         startTypingBtn: !!startTypingBtn,
+        clearPaperBtn: !!clearPaperBtn,
+        stopTypingBtn: !!stopTypingBtn,
         transformIntensity: !!transformIntensity,
-        madlibBtn: !!madlibBtn,
-        wordswapBtn: !!wordswapBtn,
-        phonemeSwapBtn: !!phonemeSwapBtn,
-        consonantSwapBtn: !!consonantSwapBtn,
-        syllableInversionBtn: !!syllableInversionBtn,
-        caesuraInversionBtn: !!caesuraInversionBtn,
-        lineSwapBtn: !!lineSwapBtn,
-        prefixFreakBtn: !!prefixFreakBtn,
-        conjunctionSwapBtn: !!conjunctionSwapBtn,
-        spoonerismBtn: !!spoonerismBtn,
-        numerologiesBtn: !!numerologiesBtn
+        textTransformsControls: !!textTransformsControls
     });
-
     // Stop initialization if critical elements are missing
     if (!paper || !textInput) {
         console.error("Critical elements missing, cannot initialize typewriter");
         return;
     }
 
+
+    function setupPaperElement() {
+    if (!paper) return;
+    
+    // Reset any existing content
+    paper.innerHTML = '';
+    
+    // Set the correct styles to ensure full width and scrolling
+    paper.style.display = "block";
+    paper.style.width = "100%";
+    paper.style.height = "100%";
+    paper.style.padding = "20px";
+    paper.style.boxSizing = "border-box";
+    paper.style.overflowY = "auto"; // This enables vertical scrolling
+    paper.style.overflowX = "hidden";
+    paper.style.whiteSpace = "pre-wrap";
+    paper.style.wordBreak = "break-word";
+    paper.style.lineHeight = "1.0"; // This sets single spacing (adjust as needed)
+    
+    // Add a style element for text line handling with single spacing
+    const styleEl = document.createElement('style');
+    styleEl.textContent = `
+        .text-line {
+            display: inline;
+            white-space: pre-wrap;
+            line-height: 1.0; /* Single spacing for text lines */
+            margin: 0; /* Remove any default margins */
+        }
+        #paper {
+            overflow-y: auto !important; /* Force scrolling with !important */
+            max-height: 100%; /* Ensure content fits within container */
+        }
+    `;
+    document.head.appendChild(styleEl);
+    
+    // Check parent element constraints
+    if (paper.parentElement) {
+        paper.parentElement.style.width = "100%";
+        paper.parentElement.style.overflow = "hidden"; // Contain the paper element
+    }
+}    
+
+// Call the setup function
+    setupPaperElement();
+    
     // State variables
     let typingInProgress = false;
     let stopTyping = false;
@@ -495,41 +484,69 @@ function initTypewriter() {
     processingElement.textContent = 'Processing...';
     processingElement.style.display = 'none';
     if (widget) widget.appendChild(processingElement);
-
-    // Make sure paper content starts at the bottom
+    // Make sure paper uses full width - FIX FOR PAPER AREA
     if (paper) {
         paper.style.display = "flex";
         paper.style.flexDirection = "column";
         paper.style.justifyContent = "flex-end";
-    }
+        paper.style.width = "100%";
+        paper.style.height = "100%";
+        paper.style.padding = "20px";
+        paper.style.boxSizing = "border-box";
+        paper.style.overflowY = "auto";
+        paper.style.overflowX = "hidden";
+        paper.style.whiteSpace = "pre-wrap";
+        paper.style.wordBreak = "break-word";
+    }    // Transformation buttons - fixed selectors
+    const transformButtons = {
+        madlibBtn: document.querySelector('#madlib-btn, .madlib-btn'),
+        wordswapBtn: document.querySelector('#wordswap-btn, .wordswap-btn'),
+        phonemeSwapBtn: document.querySelector('#phoneme-swap-btn, .phoneme-swap-btn'),
+        consonantSwapBtn: document.querySelector('#consonant-swap-btn, .consonant-swap-btn'),
+        syllableInversionBtn: document.querySelector('#syllable-inversion-btn, .syllable-inversion-btn'),
+        caesuraInversionBtn: document.querySelector('#caesura-inversion-btn, .caesura-inversion-btn'),
+        lineSwapBtn: document.querySelector('#lineSwap-btn, .lineSwap-btn'),
+        prefixFreakBtn: document.querySelector('#freak-btn, .freak-btn'),
+        conjunctionSwapBtn: document.querySelector('#conjunction-swap-btn, .conjunction-swap-btn'),
+        spoonerismBtn: document.querySelector('#spoonerism-btn, .spoonerism-btn'),
+        numerologiesBtn: document.querySelector('#numerologies-btn, .numerologies-btn')
+    };
 
-    // Unified implementation of getIntensityValue
-    function getIntensityValue(totalItems, intensity) {
-        const intensityMap = {
-            'little': Math.max(1, Math.floor(totalItems * 0.05)),
-            'some': Math.max(1, Math.floor(totalItems * 0.25)),
-            'many': Math.max(1, Math.floor(totalItems * 0.5)),
-            'most': Math.max(1, Math.floor(totalItems * 0.75)),
-            // Add support for other intensity names used elsewhere
-            'minimal': Math.max(1, Math.floor(totalItems * 0.1)),
-            'medium': Math.max(1, Math.floor(totalItems * 0.5)),
-            'high': Math.max(1, Math.floor(totalItems * 0.75)),
-            'max': totalItems
-        };
-        return intensityMap[intensity] || Math.max(1, Math.floor(totalItems * 0.25));
-    }
+    // Log transform buttons to verify (DEBUGGING)
+    console.log("Transform buttons found:", Object.keys(transformButtons).reduce((acc, key) => {
+        acc[key] = !!transformButtons[key];
+        return acc;
+    }, {}));
 
     // Helper function to show/hide processing status
     function setProcessingStatus(isProcessing) {
         if (processingElement) {
             processingElement.style.display = isProcessing ? 'block' : 'none';
         }
+        
+        // Disable/enable buttons during processing
+        Object.values(transformButtons).forEach(btn => {
+            if (btn) btn.disabled = isProcessing;
+        });
+        
+        if (startTypingBtn) {
+            startTypingBtn.disabled = isProcessing;
+        }
     }
 
     // Helper function to display errors
     function displayError(message) {
         console.error(message);
-        alert(message);
+        const errorDiv = document.getElementById('error-message');
+        if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        } else {
+            alert(message);
+        }
     }
 
     // Helper function to update text
@@ -549,25 +566,378 @@ function initTypewriter() {
         return replacement.toLowerCase();
     }
 
-    // Improved madlib with optimization
+    // Unified implementation of getIntensityValue
+    function getIntensityValue(totalItems, intensity) {
+        const intensityMap = {
+            'little': Math.max(1, Math.floor(totalItems * 0.05)),
+            'some': Math.max(1, Math.floor(totalItems * 0.25)),
+            'many': Math.max(1, Math.floor(totalItems * 0.5)),
+            'most': Math.max(1, Math.floor(totalItems * 0.75)),
+            // Add support for other intensity names used elsewhere
+            'minimal': Math.max(1, Math.floor(totalItems * 0.1)),
+            'medium': Math.max(1, Math.floor(totalItems * 0.5)),
+            'high': Math.max(1, Math.floor(totalItems * 0.75)),
+            'max': totalItems
+        };
+        return intensityMap[intensity] || Math.max(1, Math.floor(totalItems * 0.25));
+    }
+
+    // Create and/or attach listeners to all transform buttons
+    function setupTransformButton(button, transformFunction, transformName) {
+        if (!button && textTransformsControls) {
+            console.log(`Creating ${transformName} button...`);
+            const newButton = document.createElement('button');
+            newButton.textContent = transformName;
+            newButton.id = `${transformName.toLowerCase().replace(' ', '-')}-btn`;
+            newButton.classList.add('transform-btn');
+            textTransformsControls.appendChild(newButton);
+            button = newButton;  // Update the button variable
+        }
+
+        if (button) {
+            console.log(`Setting up ${transformName} button event listener`);
+            button.addEventListener('click', () => {
+                console.log(`${transformName} button clicked!`);
+                processTextTransformation(transformFunction, transformName);
+            });
+        } else {
+            console.warn(`Could not find or create ${transformName} button`);
+        }
+        return button; // Return the button for consistency
+    }
+
+    // Centralized text processing function
+    function processTextTransformation(transformFunction, transformName) {
+        if (typingInProgress) {
+            console.warn("Cannot transform text while typing is in progress");
+            return;
+        }
+        
+        const intensity = transformIntensity ? transformIntensity.value : 'some';
+        const inputText = textInput.value;
+        
+        if (!inputText.trim()) {
+            console.warn("No text to transform");
+            displayError("Please enter text to transform!");
+            return;
+        }
+        
+        console.log(`Starting ${transformName} transformation with intensity: ${intensity}`);
+        setProcessingStatus(true);
+        
+        if (processingTask) {
+            clearTimeout(processingTask);
+        }
+        
+        processingTask = setTimeout(() => {
+            transformFunction(
+                inputText,
+                intensity,
+                (progress) => {
+                    console.log(`${transformName} progress: ${Math.round(progress * 100)}%`);
+                },
+                (transformedText) => {
+                    updateText(transformedText);
+                    setProcessingStatus(false);
+                    console.log(`${transformName} transformation complete`);
+                }
+            );
+        }, 10);
+    }
+
+    // Set up all transform buttons with proper functions
+    setupTransformButton(transformButtons.madlibBtn, createMadlib, "Madlib");
+    setupTransformButton(transformButtons.wordswapBtn, shuffleLongWords, "Word Swap");
+    setupTransformButton(transformButtons.phonemeSwapBtn, enhancedPhonemeSwap, "Phoneme Swap");
+    setupTransformButton(transformButtons.consonantSwapBtn, consonantSwap, "Consonant Swap");
+    setupTransformButton(transformButtons.syllableInversionBtn, invertSyllables, "Syllable Inversion");
+    setupTransformButton(transformButtons.caesuraInversionBtn, invertAtCaesura, "Caesura Inversion");
+    setupTransformButton(transformButtons.lineSwapBtn, reorderPoemLines, "Line Swap");
+    setupTransformButton(transformButtons.prefixFreakBtn, prefixFreak, "Prefix Freak");
+    setupTransformButton(transformButtons.conjunctionSwapBtn, simpleConjunctionSwap, "Conjunction Swap");
+    setupTransformButton(transformButtons.spoonerismBtn, spoonerism, "Spoonerism");
+    setupTransformButton(transformButtons.numerologiesBtn, numerologiesTransform, "Numerologies");
+
+    // Event listeners for buttons
+    if (startTypingBtn) {
+        console.log("Setting up Start Typing button event listener");
+        startTypingBtn.addEventListener('click', function() {
+            console.log("Start Typing button clicked!");
+            if (typingInProgress) {
+                // Stop typing if already in progress
+                stopTyping = true;
+                startTypingBtn.textContent = 'Start Typing';
+                return;
+            }
+            
+            const text = textInput.value;
+            if (!text.trim()) {
+                displayError("Please enter text to type!");
+                return;
+            }
+            
+            // Ensure paper is cleared before starting
+            if (paper) {
+                paperContent = '';
+                paper.innerHTML = '';
+                
+                // Make sure paper uses full width
+                paper.style.width = '100%';
+                paper.style.boxSizing = 'border-box';
+                paper.style.padding = '20px';
+            }
+            
+            typingInProgress = true;
+            startTypingBtn.textContent = 'Stop';
+            simulateTyping(text, 0, () => {
+                console.log("Typing complete");
+                startTypingBtn.textContent = 'Start Typing';
+            });
+        });
+    }
+
+    if (stopTypingBtn) {
+        console.log("Setting up Stop Typing button event listener");
+        stopTypingBtn.addEventListener('click', function() {
+            console.log("Stop Typing button clicked!");
+            if (typingInProgress) {
+                stopTyping = true;
+                console.log("Typing stopped");
+            }
+        });
+    }
+
+    if (clearPaperBtn) {
+        console.log("Setting up Clear Paper button event listener");
+        clearPaperBtn.addEventListener('click', function() {
+            console.log("Clear Paper button clicked!");
+            if (typingInProgress) {
+                displayError("Cannot clear paper while typing is in progress");
+                return;
+            }
+            
+            paperContent = '';
+            if (paper) {
+                paper.innerHTML = '';
+            }
+            console.log("Paper cleared");
+        });
+    }
+
+    if (downloadBtn) {
+        console.log("Setting up Download button event listener");
+        downloadBtn.addEventListener('click', function() {
+            console.log("Download button clicked!");
+            if (!paperContent.trim()) {
+                displayError("No content to download");
+                return;
+            }
+            
+            // Create a blob and download it
+            const blob = new Blob([paperContent.replace(/<br\s*\/?>/gi, '\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'typewriter-output.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            console.log("Content downloaded");
+        });
+    }
+
+    // Improved typing functionality
+    function simulateTyping(text, index, onComplete) {
+        if (stopTyping) {
+            stopTyping = false;
+            typingInProgress = false;
+            if (onComplete) onComplete();
+            return;
+        }
+        
+        if (index < text.length) {
+            const char = text.charAt(index);
+            
+            // Skip non-printable characters
+            if (char.charCodeAt(0) < 32 && char !== '\n') {
+                setTimeout(() => simulateTyping(text, index + 1, onComplete), 10);
+                return;
+            }
+            
+            // Type the character
+            if (char === '\n') {
+                paperContent += '\n';
+                if (paper) {
+                    const lineBreak = document.createElement('br');
+                    paper.appendChild(lineBreak);
+                    
+                    // Scroll to bottom to see new content
+                    paper.scrollTop = paper.scrollHeight;
+                }
+            } else {
+                paperContent += char;
+                if (paper) {
+                    // Create a new span for the character for better styling control
+                    const charSpan = document.createElement('span');
+                    charSpan.textContent = char;
+                    charSpan.className = 'typed-char';
+                    paper.appendChild(charSpan);
+                    
+                    // Scroll to bottom to see new content
+                    paper.scrollTop = paper.scrollHeight;
+                }
+            }
+            
+            // Find and animate the key if possible
+            if (keys && keys.length > 0) {
+                let keyToPress = null;
+                // Try to find the key by data-key attribute
+                for (const key of keys) {
+                    if (key.getAttribute('data-key') === char.toLowerCase() || 
+                        key.getAttribute('data-char') === char.toLowerCase()) {
+                        keyToPress = key;
+                        break;
+                    }
+                }
+                
+                // If not found, try to find by text content
+                if (!keyToPress) {
+                    for (const key of keys) {
+                        if (key.textContent.toLowerCase() === char.toLowerCase()) {
+                            keyToPress = key;
+                            break;
+                        }
+                    }
+                }
+                
+                // Animate the key press
+                if (keyToPress) {
+                    animateKeyPress(keyToPress);
+                } else if (char === ' ') {
+                    // Animate space bar if character is space
+                    const spaceBar = document.querySelector('.space-bar');
+                    if (spaceBar) animateKeyPress(spaceBar);
+                }
+            }
+            
+            // Type the next character after a delay
+            const typingSpeed = Math.random() * 100 + 50; // Random delay between 50-150ms
+            setTimeout(() => simulateTyping(text, index + 1, onComplete), typingSpeed);
+        } else {
+            // Typing complete
+            typingInProgress = false;
+            if (startTypingBtn) startTypingBtn.textContent = 'Start Typing';
+            if (onComplete) onComplete();
+        }
+    }
+
+    // Animate carriage return if available
+    if (carriageReturn) {
+        console.log("Setting up Carriage Return button event listener");
+        carriageReturn.addEventListener('click', function() {
+            console.log("Carriage Return clicked!");
+            if (typingInProgress) return;
+            
+            carriageReturn.classList.add('pressed');
+            setTimeout(() => {
+                carriageReturn.classList.remove('pressed');
+                
+                // Add a new line to the paper
+                paperContent += '\n';
+                if (paper) {
+                    paper.appendChild(document.createElement('br'));
+                    paper.scrollTop = paper.scrollHeight;
+                }
+            }, 100);
+        });
+    }
+
+    // Animate platen knobs if available
+    if (platenKnobs && platenKnobs.length > 0) {
+        console.log("Setting up Platen Knobs event listeners");
+        platenKnobs.forEach(knob => {
+            knob.addEventListener('click', function() {
+                console.log("Platen Knob clicked!");
+                if (typingInProgress) return;
+                
+                knob.classList.add('rotating');
+                setTimeout(() => {
+                    knob.classList.remove('rotating');
+                    
+                    // Add a new line to the paper
+                    paperContent += '\n';
+                    if (paper) {
+                        paper.appendChild(document.createElement('br'));
+                        paper.scrollTop = paper.scrollHeight;
+                    }
+                }, 500);
+            });
+        });
+    }
+
+    // Helper function to animate key press
+    function animateKeyPress(key) {
+        if (!key) return;
+        
+        key.classList.add('pressed');
+        setTimeout(() => {
+            key.classList.remove('pressed');
+        }, 100);
+    }
+
+    // Add click handlers for keys if they exist
+    if (keys && keys.length > 0) {
+        console.log("Setting up key event listeners");
+        keys.forEach(key => {
+            key.addEventListener('click', function() {
+                console.log("Key clicked:", this.textContent);
+                if (!paper || typingInProgress) return;
+                
+                const keyValue = this.getAttribute('data-char') || 
+                                this.getAttribute('data-key') || 
+                                this.textContent.toLowerCase();
+                
+                if (keyValue === 'space') {
+                    // Insert space
+                    paperContent += ' ';
+                    const span = document.createElement('span');
+                    span.textContent = ' ';
+                    paper.appendChild(span);
+                } else if (keyValue.length === 1) {
+                    // Insert regular character
+                    paperContent += keyValue;
+                    const span = document.createElement('span');
+                    span.textContent = keyValue;
+                    paper.appendChild(span);
+                }
+                
+                animateKeyPress(this);
+                paper.scrollTop = paper.scrollHeight;
+            });
+        });
+    }
+
+    console.log("Typewriter initialization complete");
+
+    // TRANSFORM FUNCTIONS
+
+    // Improved madlib function
     function createMadlib(text, intensity, progressCallback, completeCallback) {
         console.log("Creating madlib with intensity:", intensity);
-        // Break down into a series of chunked operations
         const words = text.split(/\s+/);
         const madlibWords = [...words];
         const eligibleWords = words.filter(word => word.length >= 3);
         const wordsToReplace = getIntensityValue(eligibleWords.length, intensity);
         const usedIndexes = new Set();
 
-        // Chunk the work in batches
         const chunkSize = 100;
-        // Process 100 words at a time
         let replacedCount = 0;
         let currentIndex = 0;
 
         function processNextChunk() {
             const startTime = performance.now();
-            // Process until chunk is complete or time limit exceeded
             while (replacedCount < wordsToReplace &&
                 currentIndex < words.length &&
                 performance.now() - startTime < 50) {
@@ -581,22 +951,18 @@ function initTypewriter() {
                 currentIndex++;
             }
 
-            // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, replacedCount / wordsToReplace);
                 progressCallback(progress);
             }
 
-            // Check if we're done
             if (replacedCount >= wordsToReplace || currentIndex >= words.length) {
                 completeCallback(madlibWords.join(' '));
             } else {
-                // Schedule the next chunk
                 setTimeout(processNextChunk, 0);
             }
         }
 
-        // Start the first chunk
         setTimeout(processNextChunk, 0);
     }
 
@@ -611,7 +977,7 @@ function initTypewriter() {
         const swapsNeeded = getIntensityValue(Math.floor(longWordIndices.length / 2), intensity);
         const swappedIndices = new Set();
         let swapsPerformed = 0;
-        // Process in chunks to avoid UI freezing
+        
         function processChunk() {
             const startTime = performance.now();
             while (swapsPerformed < swapsNeeded &&
@@ -636,22 +1002,18 @@ function initTypewriter() {
                 }
             }
 
-            // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, swapsPerformed / swapsNeeded);
                 progressCallback(progress);
             }
 
-            // Check if we're done
             if (swapsPerformed >= swapsNeeded || longWordIndices.length < 2) {
                 completeCallback(words.join(' '));
             } else {
-                // Schedule the next chunk
                 setTimeout(processChunk, 0);
             }
         }
 
-        // Start processing
         setTimeout(processChunk, 0);
     }
 
@@ -679,7 +1041,6 @@ function initTypewriter() {
 
         function processChunk() {
             const startTime = performance.now();
-            // Process this chunk
             while (transformCount < wordsToTransform &&
                 currentIndex < words.length &&
                 performance.now() - startTime < 50) {
@@ -714,65 +1075,39 @@ function initTypewriter() {
                 currentIndex++;
             }
 
-            // Report progress
             if (progressCallback) {
                 const progress = Math.min(1, transformCount / wordsToTransform);
                 progressCallback(progress);
             }
 
-            // Check if we're done
             if (transformCount >= wordsToTransform || currentIndex >= words.length) {
                 completeCallback(words.join(' '));
             } else {
-                // Schedule the next chunk
                 setTimeout(processChunk, 0);
             }
         }
 
-        // Start processing
         setTimeout(processChunk, 0);
     }
 
     // Improved consonant swap with chunking
     function consonantSwap(text, intensity, progressCallback, completeCallback) {
         console.log("Swapping consonants with intensity:", intensity);
-        // Consonant pairs that won't lead to unreadable text
         const consonantPairs = {
-            'b': 'p',
-            'p': 'b',
-            'd': 't',
-            't': 'd',
-            'g': 'k',
-            'k': 'g',
-            'v': 'f',
-            'f': 'v',
-            'z': 's',
-            's': 'z',
-            'j': 'ch',
-            'c': 'k',
-            'B': 'P',
-            'P': 'B',
-            'D': 'T',
-            'T': 'D',
-            'G': 'K',
-            'K': 'G',
-            'V': 'F',
-            'F': 'V',
-            'Z': 'S',
-            'S': 'Z',
-            'J': 'Ch',
-            'C': 'K'
+            'b': 'p', 'p': 'b', 'd': 't', 't': 'd', 'g': 'k', 'k': 'g',
+            'v': 'f', 'f': 'v', 'z': 's', 's': 'z', 'j': 'ch', 'c': 'k',
+            'B': 'P', 'P': 'B', 'D': 'T', 'T': 'D', 'G': 'K', 'K': 'G',
+            'V': 'F', 'F': 'V', 'Z': 'S', 'S': 'Z', 'J': 'Ch', 'C': 'K'
         };
 
         const words = text.split(/\s+/);
         const intensityValue = parseFloat(intensity === 'little' ? 0.1 :
             intensity === 'some' ? 0.2 :
-            intensity === 'many' ? 0.4 :
-            0.6);
+            intensity === 'many' ? 0.4 : 0.6);
         let processedCount = 0;
         const totalWords = words.length;
         const results = new Array(totalWords);
-        // Use chunk processing to avoid UI freezing
+        
         function processChunk(startIdx, endIdx) {
             const start = performance.now();
             for (let i = startIdx; i < endIdx && i < totalWords; i++) {
@@ -785,7 +1120,6 @@ function initTypewriter() {
                 let result = '';
                 for (let j = 0; j < word.length; j++) {
                     const char = word[j];
-                    // Only swap some consonants to avoid making text unreadable
                     if (consonantPairs[char] && Math.random() < 0.5) {
                         result += consonantPairs[char];
                     } else {
@@ -793,21 +1127,18 @@ function initTypewriter() {
                     }
                 }
                 results[i] = result;
-                // Check if we've been processing too long
+                
                 if (i % 10 === 0 && performance.now() - start > 50) {
                     processedCount = i + 1;
-                    // Report progress
                     if (progressCallback) {
                         progressCallback(processedCount / totalWords);
                     }
-
-                    // Schedule next chunk
                     setTimeout(() => processChunk(i + 1, endIdx), 0);
                     return;
                 }
             }
 
-            processedCount = endIdx;// Report progress
+            processedCount = endIdx;
             if (progressCallback) {
                 progressCallback(processedCount / totalWords);
             }
@@ -815,13 +1146,11 @@ function initTypewriter() {
             if (processedCount >= totalWords) {
                 completeCallback(results.join(' '));
             } else {
-                // Process next chunk
                 const nextEnd = Math.min(processedCount + 200, totalWords);
                 setTimeout(() => processChunk(processedCount, nextEnd), 0);
             }
         }
 
-        // Start processing in chunks of 200 words
         const firstChunkEnd = Math.min(200, totalWords);
         setTimeout(() => processChunk(0, firstChunkEnd), 0);
     }
@@ -832,8 +1161,7 @@ function initTypewriter() {
         const words = text.split(/\s+/);
         const intensityValue = parseFloat(intensity === 'little' ? 0.1 :
             intensity === 'some' ? 0.25 :
-            intensity === 'many' ? 0.5 :
-            0.75);
+            intensity === 'many' ? 0.5 : 0.75);
         const totalWords = words.length;
         const results = new Array(totalWords);
         let processedCount = 0;
@@ -847,7 +1175,6 @@ function initTypewriter() {
                     continue;
                 }
 
-                // Simple approximation - reverse the word or swap halves
                 if (Math.random() < 0.5) {
                     results[i] = word.split('').reverse().join('');
                 } else {
@@ -855,22 +1182,17 @@ function initTypewriter() {
                     results[i] = word.substring(mid) + word.substring(0, mid);
                 }
 
-                // Check if we've been processing too long
                 if (i % 20 === 0 && performance.now() - start > 50) {
                     processedCount = i + 1;
-                    // Report progress
                     if (progressCallback) {
                         progressCallback(processedCount / totalWords);
                     }
-
-                    // Schedule next chunk
                     setTimeout(() => processChunk(i + 1, endIdx), 0);
                     return;
                 }
             }
 
             processedCount = endIdx;
-            // Report progress
             if (progressCallback) {
                 progressCallback(processedCount / totalWords);
             }
@@ -878,13 +1200,11 @@ function initTypewriter() {
             if (processedCount >= totalWords) {
                 completeCallback(results.join(' '));
             } else {
-                // Process next chunk
                 const nextEnd = Math.min(processedCount + 200, totalWords);
                 setTimeout(() => processChunk(processedCount, nextEnd), 0);
             }
         }
 
-        // Start processing in chunks
         const firstChunkEnd = Math.min(200, totalWords);
         setTimeout(() => processChunk(0, firstChunkEnd), 0);
     }
@@ -1410,7 +1730,7 @@ function animateKeyPress(key) {
     }, 100);
 }
 
-// Helper function to simulate typing
+// Replace this function with the improved version
 function simulateTyping(text, index, onComplete) {
     if (stopTyping) {
         stopTyping = false;
@@ -1422,20 +1742,43 @@ function simulateTyping(text, index, onComplete) {
     if (index < text.length) {
         const char = text.charAt(index);
         
-        // Skip non-printable characters
-        if (char.charCodeAt(0) < 32) {
+        // Skip non-printable characters except newline
+        if (char.charCodeAt(0) < 32 && char !== '\n') {
             setTimeout(() => simulateTyping(text, index + 1, onComplete), 10);
             return;
         }
         
         // Type the character
         paperContent += char;
+        
         if (paper) {
-            // Create a new span for the character
-            const charSpan = document.createElement('span');
-            charSpan.textContent = char;
-            charSpan.className = 'typed-char';
-            paper.appendChild(charSpan);
+            // Handle newlines
+            if (char === '\n') {
+                const lineBreak = document.createElement('br');
+                paper.appendChild(lineBreak);
+            } else {
+                // For normal text, we need to either create a new text node
+                // or append to the last text node
+                let lastNode = paper.lastChild;
+                
+                // Check if last node is a text node
+                if (!lastNode || lastNode.nodeName === 'BR') {
+                    // Create a new text span if no text node exists or after a line break
+                    const span = document.createElement('span');
+                    span.className = 'text-line';
+                    span.textContent = char;
+                    paper.appendChild(span);
+                } else if (lastNode.nodeType === Node.ELEMENT_NODE && lastNode.classList.contains('text-line')) {
+                    // Append to existing text node
+                    lastNode.textContent += char;
+                } else {
+                    // Create a new text span
+                    const span = document.createElement('span');
+                    span.className = 'text-line';
+                    span.textContent = char;
+                    paper.appendChild(span);
+                }
+            }
             
             // Scroll to bottom to see new content
             paper.scrollTop = paper.scrollHeight;
@@ -1446,7 +1789,8 @@ function simulateTyping(text, index, onComplete) {
             let keyToPress = null;
             // Try to find the key by data-key attribute
             for (const key of keys) {
-                if (key.getAttribute('data-key') === char.toLowerCase()) {
+                if (key.getAttribute('data-key') === char.toLowerCase() || 
+                    key.getAttribute('data-char') === char.toLowerCase()) {
                     keyToPress = key;
                     break;
                 }
@@ -1478,10 +1822,10 @@ function simulateTyping(text, index, onComplete) {
     } else {
         // Typing complete
         typingInProgress = false;
+        if (startTypingBtn) startTypingBtn.textContent = 'Start Typing';
         if (onComplete) onComplete();
     }
 }
-
 // Event listeners for buttons
 if (startTypingBtn) {
     startTypingBtn.addEventListener('click', function() {
