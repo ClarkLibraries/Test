@@ -100,78 +100,153 @@
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   [hidden] { display: none !important; }
 </style>
+
 <div class="wrap" role="region" aria-label="Random selector wheel">
   <h2 class="main">Spin the wheel</h2>
   <p class="lede">Add names or options, then spin to pick one at random.</p>
+
   <div class="layout">
     <section class="panel" aria-labelledby="setup-h">
       <h2 id="setup-h">1. Add names or options</h2>
+
       <fieldset id="setup">
         <legend class="sr-only">Names and options</legend>
+
         <label for="nameInput">Name or option</label>
-        <p class="hint" id="nameHint">Press Enter or choose Add. Separate several entries with commas. Up to 40 entries.</p>
+
+        <p class="hint" id="nameHint">
+          Press Enter or choose Add. Separate several entries with commas. Up to 40 entries.
+        </p>
+
         <div class="row">
-          <input type="text" id="nameInput" maxlength="40" autocomplete="off" aria-describedby="nameHint nameMsg">
+          <input type="text" id="nameInput" autocomplete="off" aria-describedby="nameHint nameMsg">
           <button type="button" id="addBtn">Add</button>
         </div>
+
         <p class="msg" id="nameMsg" role="status"></p>
-        <h2 id="listHead" style="margin-top:1rem">Entries (<span id="count">0</span>)</h2>
+
+        <h2 id="listHead" style="margin-top:1rem">
+          Entries (<span id="count">0</span>)
+        </h2>
+
         <ul id="nameList" aria-labelledby="listHead"></ul>
+
         <p class="empty" id="emptyNote">No entries yet.</p>
-        <label class="check" for="removeWinner"><input type="checkbox" id="removeWinner">Remove each pick from the wheel after it is chosen</label>
-        <div class="row" style="margin-top:1rem"><button type="button" class="secondary" id="clearBtn">Clear all</button></div>
+
+        <label class="check" for="removeWinner">
+          <input type="checkbox" id="removeWinner">
+          Remove each pick from the wheel after it is chosen
+        </label>
+
+        <div class="row" style="margin-top:1rem">
+          <button type="button" class="secondary" id="clearBtn">Clear all</button>
+        </div>
       </fieldset>
     </section>
+
     <section class="panel stage" aria-labelledby="spin-h">
       <h2 id="spin-h" style="align-self:flex-start">2. Spin</h2>
+
       <div class="wheel-wrap">
         <div class="pointer" aria-hidden="true"></div>
         <canvas id="wheel" aria-hidden="true"></canvas>
       </div>
-      <button type="button" id="spinBtn" class="spin" aria-describedby="spinHint" disabled>SPIN</button>
-      <p class="hint" id="spinHint" style="margin:0">Add at least 2 entries to spin.</p>
+
+      <button type="button" id="spinBtn" class="spin" aria-describedby="spinHint" disabled>
+        SPIN
+      </button>
+
+      <p class="hint" id="spinHint" style="margin:0">
+        Add at least 2 entries to spin.
+      </p>
+
       <p class="result" id="result" role="status" aria-live="polite" aria-atomic="true"></p>
     </section>
   </div>
 </div>`;
 
-  var PALETTE = ["#FF8A80","#FFC069","#FFF4A3","#B5E155","#A2DCA2","#89CFF0","#B08FD8","#C79EE8","#E6A8F7","#FFB6C1","#8898A8","#D0D0D0","#F8F8F8"];
-  var MAX = 40, DURATION = 5000;
+  var PALETTE = [
+    "#FF8A80","#FFC069","#FFF4A3","#B5E155","#A2DCA2",
+    "#89CFF0","#B08FD8","#C79EE8","#E6A8F7","#FFB6C1",
+    "#8898A8","#D0D0D0","#F8F8F8"
+  ];
+
+  var MAX = 40;
+  var MAX_ENTRY_LENGTH = 40;
+  var DURATION = 5000;
 
   function init(host) {
     if (host.shadowRoot) return;
+
     var root = host.attachShadow({ mode: "open" });
     root.innerHTML = TEMPLATE;
-    var $ = function (id) { return root.getElementById(id); };
-    var canvas = $("wheel"), ctx = canvas.getContext("2d");
-    var input = $("nameInput"), msg = $("nameMsg"), list = $("nameList");
-    var spinBtn = $("spinBtn"), result = $("result");
+
+    var $ = function (id) {
+      return root.getElementById(id);
+    };
+
+    var canvas = $("wheel");
+    var ctx = canvas.getContext("2d");
+    var input = $("nameInput");
+    var msg = $("nameMsg");
+    var list = $("nameList");
+    var spinBtn = $("spinBtn");
+    var result = $("result");
+
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    var items = [], rotation = 0, spinning = false;
+    var items = [];
+    var rotation = 0;
+    var spinning = false;
 
     function colorFor(i, n) {
-      var idx = (n % PALETTE.length === 1 && i === n - 1) ? i + 6 : i;
+      var idx = (n % PALETTE.length === 1 && i === n - 1)
+        ? i + 6
+        : i;
+
       return PALETTE[idx % PALETTE.length];
     }
 
-    function rand() { return crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296; }
+    function rand() {
+      return crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296;
+    }
 
     function draw() {
-      var size = canvas.clientWidth; if (!size) return;
+      var size = canvas.clientWidth;
+      if (!size) return;
+
       var dpr = window.devicePixelRatio || 1;
+
       canvas.width = canvas.height = Math.round(size * dpr);
+
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, size, size);
 
-      var c = size / 2, r = c - 2, n = items.length;
+      var c = size / 2;
+      var r = c - 2;
+      var n = items.length;
 
       if (!n) {
-        ctx.beginPath(); ctx.arc(c, c, r, 0, 2 * Math.PI);
-        ctx.fillStyle = "#F8F8F8"; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = "#000"; ctx.stroke();
-        ctx.fillStyle = "#000"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.beginPath();
+        ctx.arc(c, c, r, 0, 2 * Math.PI);
+        ctx.fillStyle = "#F8F8F8";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#000";
+        ctx.stroke();
 
-        var emptyFontSize = Math.max(14, Math.min(32, size * 0.055));
-        ctx.font = "600 " + emptyFontSize + 'px "Aptos Narrow", sans-serif, Arial, Helvetica';
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        var emptyFontSize = Math.max(
+          14,
+          Math.min(32, size * 0.055)
+        );
+
+        ctx.font =
+          "600 " +
+          emptyFontSize +
+          'px "Aptos Narrow", sans-serif, Arial, Helvetica';
 
         ctx.fillText("Add names to begin", c, c);
         return;
@@ -179,22 +254,16 @@
 
       var step = 2 * Math.PI / n;
 
-      /*
-       * Font size now scales with the actual wheel diameter.
-       * The 0.055 factor keeps the text proportional as the wheel grows
-       * or shrinks, while the min/max values prevent extremes.
-       */
       var fontSize = Math.max(
         13,
         Math.min(34, size * 0.055)
       );
 
-      /*
-       * When there are many entries, reduce the font size so the
-       * individual segments remain readable.
-       */
       if (n > 12) {
-        fontSize *= Math.max(0.72, 1 - ((n - 12) * 0.018));
+        fontSize *= Math.max(
+          0.72,
+          1 - ((n - 12) * 0.018)
+        );
       }
 
       for (var i = 0; i < n; i++) {
@@ -204,6 +273,7 @@
         ctx.moveTo(c, c);
         ctx.arc(c, c, r, a0, a0 + step);
         ctx.closePath();
+
         ctx.fillStyle = colorFor(i, n);
         ctx.fill();
 
@@ -212,25 +282,39 @@
         ctx.stroke();
 
         ctx.save();
+
         ctx.translate(c, c);
         ctx.rotate(a0 + step / 2);
 
         ctx.fillStyle = "#000";
         ctx.textAlign = "right";
         ctx.textBaseline = "middle";
-        ctx.font = "700 " + fontSize + 'px "Aptos Narrow", sans-serif, Arial, Helvetica';
+
+        ctx.font =
+          "700 " +
+          fontSize +
+          'px "Aptos Narrow", sans-serif, Arial, Helvetica';
 
         var t = items[i];
         var maxW = r * 0.78;
 
         if (ctx.measureText(t).width > maxW) {
-          while (t.length > 1 && ctx.measureText(t + "…").width > maxW) {
+          while (
+            t.length > 1 &&
+            ctx.measureText(t + "…").width > maxW
+          ) {
             t = t.slice(0, -1);
           }
+
           t += "…";
         }
 
-        ctx.fillText(t, r - Math.max(14, size * 0.035), 0);
+        ctx.fillText(
+          t,
+          r - Math.max(14, size * 0.035),
+          0
+        );
+
         ctx.restore();
       }
 
@@ -248,6 +332,7 @@
 
       items.forEach(function (name, i) {
         var li = document.createElement("li");
+
         var sw = document.createElement("span");
         sw.className = "swatch";
         sw.setAttribute("aria-hidden", "true");
@@ -262,6 +347,7 @@
         b.className = "secondary";
         b.textContent = "Remove";
         b.setAttribute("aria-label", "Remove " + name);
+
         b.addEventListener("click", function () {
           items.splice(i, 1);
           changed();
@@ -276,6 +362,7 @@
       $("emptyNote").hidden = items.length > 0;
 
       var ok = items.length >= 2;
+
       spinBtn.disabled = !ok || spinning;
       $("spinHint").hidden = ok;
       $("clearBtn").disabled = !items.length;
@@ -301,8 +388,11 @@
     }
 
     function addEntries() {
-      var parts = input.value.split(/[,\n]/)
-        .map(function (s) { return s.trim(); })
+      var parts = input.value
+        .split(/[;,\n]/)
+        .map(function (s) {
+          return s.trim();
+        })
         .filter(Boolean);
 
       if (!parts.length) {
@@ -314,19 +404,54 @@
       var room = MAX - items.length;
 
       if (room <= 0) {
-        say("The wheel is full. The limit is " + MAX + " entries.", true);
+        say(
+          "The wheel is full. The limit is " +
+          MAX +
+          " entries.",
+          true
+        );
         return;
       }
 
-      var added = parts.slice(0, room);
+      /*
+       * Each individual entry is limited to 40 characters.
+       * The input itself is no longer limited to 40 characters,
+       * so comma-separated lists can contain multiple entries.
+       */
+      var tooLong = parts.filter(function (entry) {
+        return entry.length > MAX_ENTRY_LENGTH;
+      });
+
+      var added = parts
+        .slice(0, room)
+        .map(function (entry) {
+          return entry.slice(0, MAX_ENTRY_LENGTH);
+        });
+
       items = items.concat(added);
 
       input.value = "";
       input.focus();
       changed();
 
-      if (parts.length > room) {
-        say("Added " + added.length + ". The limit is " + MAX + " entries, so the rest were skipped.", true);
+      if (tooLong.length > 0) {
+        say(
+          "Added " +
+          added.length +
+          " entries. Entries longer than " +
+          MAX_ENTRY_LENGTH +
+          " characters were shortened.",
+          true
+        );
+      } else if (parts.length > room) {
+        say(
+          "Added " +
+          added.length +
+          ". The limit is " +
+          MAX +
+          " entries, so the rest were skipped.",
+          true
+        );
       } else {
         say(
           added.length === 1
@@ -349,10 +474,18 @@
       var n = items.length;
       var step = 360 / n;
       var k = Math.floor(rand() * n);
+
       var within = (0.15 + rand() * 0.7) * step;
-      var target = (360 - (k * step + within)) % 360;
-      var current = ((rotation % 360) + 360) % 360;
-      var delta = (target - current + 360) % 360 + 360 * (4 + Math.floor(rand() * 3));
+
+      var target =
+        (360 - (k * step + within)) % 360;
+
+      var current =
+        ((rotation % 360) + 360) % 360;
+
+      var delta =
+        (target - current + 360) % 360 +
+        360 * (4 + Math.floor(rand() * 3));
 
       var quick = reduceMotion.matches;
       var ms = quick ? 0 : DURATION;
@@ -361,9 +494,12 @@
 
       canvas.style.transition = quick
         ? "none"
-        : "transform " + ms + "ms cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+        : "transform " +
+          ms +
+          "ms cubic-bezier(0.17, 0.67, 0.12, 0.99)";
 
-      canvas.style.transform = "rotate(" + rotation + "deg)";
+      canvas.style.transform =
+        "rotate(" + rotation + "deg)";
 
       setTimeout(function () {
         var winner = items[k];
@@ -378,7 +514,11 @@
           items.splice(k, 1);
           resetWheel();
           render();
-          text += " (removed from the wheel, " + items.length + " left)";
+
+          text +=
+            " (removed from the wheel, " +
+            items.length +
+            " left)";
         } else {
           render();
         }
@@ -415,7 +555,8 @@
     render();
   }
 
-  var hosts = document.querySelectorAll("[data-selector-wheel]");
+  var hosts =
+    document.querySelectorAll("[data-selector-wheel]");
 
   for (var h = 0; h < hosts.length; h++) {
     init(hosts[h]);
