@@ -1,0 +1,424 @@
+<style type="text/css">
+.research-statements-container * {
+    box-sizing: border-box;
+    font-family: 'Aptos Narrow', sans-serif, Arial, Helvetica;
+}
+
+.research-statements-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 8px;
+    position: relative;
+}
+
+.research-statements-container h3 {
+    font-size: 1.9rem;
+    color: #00518A;
+    margin-bottom: 15px;
+}
+
+.research-statements-list {
+    list-style-position: inside;
+    counter-reset: statement-counter;
+}
+
+.research-statements-list li {
+    position: relative;
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #000000;
+    font-size: 1.7rem;
+    line-height: 1.4;
+}
+
+.research-statements-list li:nth-child(even) {
+    background-color: #e8f4fa;
+}
+
+@media (max-width: 600px) {
+    .research-statements-container {
+        padding: 5px;
+    }
+
+    .research-statements-list li {
+        padding: 5px;
+        font-size: 1.7rem;
+    }
+}
+
+.research-statements-list li:focus {
+    outline: 3px solid #00629B;
+    outline-offset: 2px;
+}
+</style>
+
+<div data-selector-wheel style="display:block;width:100%;height:100%;"></div>
+
+<script>
+(function () {
+  var TEMPLATE = `
+<style>
+  :host { all: initial; display: block; font-family: 'Aptos Narrow', sans-serif, Arial, Helvetica; font-size: 1rem; line-height: 1.5; color: #1d1d1b; }
+  *, *::before, *::after { box-sizing: border-box; }
+  .wrap { width: 100%; max-width: 100%; margin: 0 auto; padding: 0.5rem; }
+  h2 { font-size: 1.25rem; line-height: 1.3; margin: 0 0 0.75rem; font-weight: 700; }
+  h2.main { font-size: clamp(1.5rem, 5vw, 2rem); text-align: center; margin-bottom: 0.25rem; }
+  .lede { margin: 0 auto 1.25rem; text-align: center; color: #4a4741; max-width: 60ch; }
+  .layout { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
+  .panel { background: #ffffff; border: 1px solid #76726a; border-radius: 0.75rem; padding: 1rem; }
+  .stage { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .wheel-wrap { position: relative; width: min(100%, 42rem); aspect-ratio: 1; }
+  canvas { display: block; width: 100%; height: 100%; border-radius: 50%; border: 8px solid gold; background: #fff; }
+  .pointer { position: absolute; top: -0.5rem; left: 50%; transform: translateX(-50%); z-index: 2; width: 0; height: 0;
+    border-left: 1rem solid transparent; border-right: 1rem solid transparent; border-top: 2rem solid red;
+    filter: drop-shadow(0 0 1px #000); }
+  .result { width: 100%; text-align: center; font-size: clamp(1.25rem, 5vw, 1.75rem); font-weight: 700; min-height: 3.5rem; margin: 0; padding: 0.5rem; overflow-wrap: anywhere; }
+  label { display: block; font-weight: 700; margin-bottom: 0.25rem; }
+  .hint { color: #4a4741; font-size: 0.9375rem; margin: 0 0 0.5rem; }
+  .row { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  input[type="text"] { flex: 1 1 9rem; min-width: 0; min-height: 2.75rem; padding: 0.5rem 0.75rem; font: inherit; color: #1d1d1b; background: #fff; border: 2px solid #76726a; border-radius: 0.5rem; }
+  button { min-height: 2.75rem; min-width: 2.75rem; padding: 0.5rem 1rem; font: inherit; font-weight: 700; color: #000; background: gold; border: 2px solid #000; border-radius: 0.5rem; cursor: pointer; }
+  button.secondary { background: #fff; border-color: #76726a; }
+  button:active:not(:disabled) { transform: scale(0.96); }
+  button:disabled { cursor: not-allowed; background: #e4e1da; color: #55524c; border-color: #76726a; }
+  .spin { font-size: 1.25rem; padding: 0.75rem 2.5rem; }
+  :focus-visible { outline: 3px solid #0b57d0; outline-offset: 2px; }
+  fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .check { display: flex; align-items: center; gap: 0.625rem; margin: 1rem 0 0; font-weight: 400; }
+  .check input { width: 1.5rem; height: 1.5rem; margin: 0; flex: none; accent-color: #0b57d0; }
+  .msg { min-height: 1.5rem; margin: 0.5rem 0 0; font-size: 0.9375rem; }
+  .msg.err { color: #a31515; } .msg.ok { color: #4a4741; }
+  ul { list-style: none; margin: 0.5rem 0 0; padding: 0; max-height: 20rem; overflow-y: auto; }
+  li { display: flex; align-items: center; gap: 0.625rem; padding: 0.25rem 0; border-bottom: 1px solid #ddd9d0; }
+  .swatch { flex: none; width: 1.25rem; height: 1.25rem; border-radius: 0.25rem; border: 2px solid #55524c; }
+  .nm { flex: 1; overflow-wrap: anywhere; }
+  .empty { color: #4a4741; margin: 0.5rem 0 0; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  [hidden] { display: none !important; }
+</style>
+<div class="wrap" role="region" aria-label="Random selector wheel">
+  <h2 class="main">Spin the wheel</h2>
+  <p class="lede">Add names or options, then spin to pick one at random.</p>
+  <div class="layout">
+    <section class="panel" aria-labelledby="setup-h">
+      <h2 id="setup-h">1. Add names or options</h2>
+      <fieldset id="setup">
+        <legend class="sr-only">Names and options</legend>
+        <label for="nameInput">Name or option</label>
+        <p class="hint" id="nameHint">Press Enter or choose Add. Separate several entries with commas. Up to 40 entries.</p>
+        <div class="row">
+          <input type="text" id="nameInput" maxlength="40" autocomplete="off" aria-describedby="nameHint nameMsg">
+          <button type="button" id="addBtn">Add</button>
+        </div>
+        <p class="msg" id="nameMsg" role="status"></p>
+        <h2 id="listHead" style="margin-top:1rem">Entries (<span id="count">0</span>)</h2>
+        <ul id="nameList" aria-labelledby="listHead"></ul>
+        <p class="empty" id="emptyNote">No entries yet.</p>
+        <label class="check" for="removeWinner"><input type="checkbox" id="removeWinner">Remove each pick from the wheel after it is chosen</label>
+        <div class="row" style="margin-top:1rem"><button type="button" class="secondary" id="clearBtn">Clear all</button></div>
+      </fieldset>
+    </section>
+    <section class="panel stage" aria-labelledby="spin-h">
+      <h2 id="spin-h" style="align-self:flex-start">2. Spin</h2>
+      <div class="wheel-wrap">
+        <div class="pointer" aria-hidden="true"></div>
+        <canvas id="wheel" aria-hidden="true"></canvas>
+      </div>
+      <button type="button" id="spinBtn" class="spin" aria-describedby="spinHint" disabled>SPIN</button>
+      <p class="hint" id="spinHint" style="margin:0">Add at least 2 entries to spin.</p>
+      <p class="result" id="result" role="status" aria-live="polite" aria-atomic="true"></p>
+    </section>
+  </div>
+</div>`;
+
+  var PALETTE = ["#FF8A80","#FFC069","#FFF4A3","#B5E155","#A2DCA2","#89CFF0","#B08FD8","#C79EE8","#E6A8F7","#FFB6C1","#8898A8","#D0D0D0","#F8F8F8"];
+  var MAX = 40, DURATION = 5000;
+
+  function init(host) {
+    if (host.shadowRoot) return;
+    var root = host.attachShadow({ mode: "open" });
+    root.innerHTML = TEMPLATE;
+    var $ = function (id) { return root.getElementById(id); };
+    var canvas = $("wheel"), ctx = canvas.getContext("2d");
+    var input = $("nameInput"), msg = $("nameMsg"), list = $("nameList");
+    var spinBtn = $("spinBtn"), result = $("result");
+    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var items = [], rotation = 0, spinning = false;
+
+    function colorFor(i, n) {
+      var idx = (n % PALETTE.length === 1 && i === n - 1) ? i + 6 : i;
+      return PALETTE[idx % PALETTE.length];
+    }
+
+    function rand() { return crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296; }
+
+    function draw() {
+      var size = canvas.clientWidth; if (!size) return;
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.height = Math.round(size * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, size, size);
+
+      var c = size / 2, r = c - 2, n = items.length;
+
+      if (!n) {
+        ctx.beginPath(); ctx.arc(c, c, r, 0, 2 * Math.PI);
+        ctx.fillStyle = "#F8F8F8"; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = "#000"; ctx.stroke();
+        ctx.fillStyle = "#000"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+
+        var emptyFontSize = Math.max(14, Math.min(32, size * 0.055));
+        ctx.font = "600 " + emptyFontSize + 'px "Aptos Narrow", sans-serif, Arial, Helvetica';
+
+        ctx.fillText("Add names to begin", c, c);
+        return;
+      }
+
+      var step = 2 * Math.PI / n;
+
+      /*
+       * Font size now scales with the actual wheel diameter.
+       * The 0.055 factor keeps the text proportional as the wheel grows
+       * or shrinks, while the min/max values prevent extremes.
+       */
+      var fontSize = Math.max(
+        13,
+        Math.min(34, size * 0.055)
+      );
+
+      /*
+       * When there are many entries, reduce the font size so the
+       * individual segments remain readable.
+       */
+      if (n > 12) {
+        fontSize *= Math.max(0.72, 1 - ((n - 12) * 0.018));
+      }
+
+      for (var i = 0; i < n; i++) {
+        var a0 = -Math.PI / 2 + i * step;
+
+        ctx.beginPath();
+        ctx.moveTo(c, c);
+        ctx.arc(c, c, r, a0, a0 + step);
+        ctx.closePath();
+        ctx.fillStyle = colorFor(i, n);
+        ctx.fill();
+
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "#000";
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(c, c);
+        ctx.rotate(a0 + step / 2);
+
+        ctx.fillStyle = "#000";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        ctx.font = "700 " + fontSize + 'px "Aptos Narrow", sans-serif, Arial, Helvetica';
+
+        var t = items[i];
+        var maxW = r * 0.78;
+
+        if (ctx.measureText(t).width > maxW) {
+          while (t.length > 1 && ctx.measureText(t + "…").width > maxW) {
+            t = t.slice(0, -1);
+          }
+          t += "…";
+        }
+
+        ctx.fillText(t, r - Math.max(14, size * 0.035), 0);
+        ctx.restore();
+      }
+
+      ctx.beginPath();
+      ctx.arc(c, c, r * 0.07, 0, 2 * Math.PI);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+    }
+
+    function render() {
+      list.textContent = "";
+
+      items.forEach(function (name, i) {
+        var li = document.createElement("li");
+        var sw = document.createElement("span");
+        sw.className = "swatch";
+        sw.setAttribute("aria-hidden", "true");
+        sw.style.background = colorFor(i, items.length);
+
+        var nm = document.createElement("span");
+        nm.className = "nm";
+        nm.textContent = name;
+
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "secondary";
+        b.textContent = "Remove";
+        b.setAttribute("aria-label", "Remove " + name);
+        b.addEventListener("click", function () {
+          items.splice(i, 1);
+          changed();
+          input.focus();
+        });
+
+        li.append(sw, nm, b);
+        list.append(li);
+      });
+
+      $("count").textContent = items.length;
+      $("emptyNote").hidden = items.length > 0;
+
+      var ok = items.length >= 2;
+      spinBtn.disabled = !ok || spinning;
+      $("spinHint").hidden = ok;
+      $("clearBtn").disabled = !items.length;
+
+      draw();
+    }
+
+    function resetWheel() {
+      rotation = 0;
+      canvas.style.transition = "none";
+      canvas.style.transform = "rotate(0deg)";
+    }
+
+    function changed() {
+      resetWheel();
+      result.textContent = "";
+      render();
+    }
+
+    function say(text, err) {
+      msg.textContent = text;
+      msg.className = "msg " + (err ? "err" : "ok");
+    }
+
+    function addEntries() {
+      var parts = input.value.split(/[,\n]/)
+        .map(function (s) { return s.trim(); })
+        .filter(Boolean);
+
+      if (!parts.length) {
+        say("Enter a name or option to add.", true);
+        input.focus();
+        return;
+      }
+
+      var room = MAX - items.length;
+
+      if (room <= 0) {
+        say("The wheel is full. The limit is " + MAX + " entries.", true);
+        return;
+      }
+
+      var added = parts.slice(0, room);
+      items = items.concat(added);
+
+      input.value = "";
+      input.focus();
+      changed();
+
+      if (parts.length > room) {
+        say("Added " + added.length + ". The limit is " + MAX + " entries, so the rest were skipped.", true);
+      } else {
+        say(
+          added.length === 1
+            ? "Added " + added[0] + "."
+            : "Added " + added.length + " entries.",
+          false
+        );
+      }
+    }
+
+    function spin() {
+      if (spinning || items.length < 2) return;
+
+      spinning = true;
+      $("setup").disabled = true;
+      spinBtn.disabled = true;
+      spinBtn.setAttribute("aria-busy", "true");
+      result.textContent = "";
+
+      var n = items.length;
+      var step = 360 / n;
+      var k = Math.floor(rand() * n);
+      var within = (0.15 + rand() * 0.7) * step;
+      var target = (360 - (k * step + within)) % 360;
+      var current = ((rotation % 360) + 360) % 360;
+      var delta = (target - current + 360) % 360 + 360 * (4 + Math.floor(rand() * 3));
+
+      var quick = reduceMotion.matches;
+      var ms = quick ? 0 : DURATION;
+
+      rotation += delta;
+
+      canvas.style.transition = quick
+        ? "none"
+        : "transform " + ms + "ms cubic-bezier(0.17, 0.67, 0.12, 0.99)";
+
+      canvas.style.transform = "rotate(" + rotation + "deg)";
+
+      setTimeout(function () {
+        var winner = items[k];
+
+        spinning = false;
+        $("setup").disabled = false;
+        spinBtn.removeAttribute("aria-busy");
+
+        var text = "Selected: " + winner;
+
+        if ($("removeWinner").checked) {
+          items.splice(k, 1);
+          resetWheel();
+          render();
+          text += " (removed from the wheel, " + items.length + " left)";
+        } else {
+          render();
+        }
+
+        result.textContent = text;
+        spinBtn.focus();
+      }, ms + 50);
+    }
+
+    $("addBtn").addEventListener("click", addEntries);
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        addEntries();
+      }
+    });
+
+    input.addEventListener("input", function () {
+      msg.textContent = "";
+    });
+
+    $("clearBtn").addEventListener("click", function () {
+      items = [];
+      say("", false);
+      changed();
+      input.focus();
+    });
+
+    spinBtn.addEventListener("click", spin);
+
+    new ResizeObserver(draw).observe(canvas);
+
+    render();
+  }
+
+  var hosts = document.querySelectorAll("[data-selector-wheel]");
+
+  for (var h = 0; h < hosts.length; h++) {
+    init(hosts[h]);
+  }
+})();
+</script>
